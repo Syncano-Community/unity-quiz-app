@@ -45,18 +45,12 @@ public class MainMenu : MonoBehaviour
 
     private void OnQuestionsDownloaded(string json)
     {
-        Quiz quiz = new Quiz();
-        for (int i = 0; i < Quiz.QUESTION_COUNT; i++) {
-            Question question = new Question();
-            question.Text = "Question " + (i + 1);
-            quiz.SetQuestion(i, question);
-        }
-        StartGame(quiz);
+        StartGame(null);
     }
 
     private void StartGame(Quiz quiz)
     {
-        Setup.quiz = quiz;
+        Setup.SetQuiz(quiz);
         SceneManager.LoadScene(Constant.SCENE_GAMEPLAY);
     }
 }
