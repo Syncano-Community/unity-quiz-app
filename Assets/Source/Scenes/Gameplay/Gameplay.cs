@@ -16,6 +16,7 @@ public class Gameplay : MonoBehaviour
         if (Setup.GetQuiz().IsValid())
         {
             gameState.Init(Setup.GetQuiz());
+            gameState.StartGame();
         }
         else
         {

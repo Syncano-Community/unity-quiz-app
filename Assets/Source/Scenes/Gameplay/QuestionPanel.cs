@@ -1,13 +1,16 @@
 ﻿using UnityEngine;
 using System.Collections;
+using System;
 
-public class QuestionPanel : MonoBehaviour
+public class QuestionPanel : Singleton<QuestionPanel>
 {
     [SerializeField]
     private QuestionView questionView;
 
     [SerializeField]
     private AnswerView[] answers = new AnswerView[4];
+
+    private Action<int> onAnswerSelected;
 
     void Start()
     {
@@ -40,5 +43,16 @@ public class QuestionPanel : MonoBehaviour
         {
             item.SetText(null);
         }
+    }
+
+    public IEnumerator ShowQuestion(Question question)
+    {
+        questionView.SetText(question.Text);
+        yield break;
+    }
+
+    public void SetOnAnswerSelectedListener(Action<int> action)
+    {
+        onAnswerSelected = action;
     }
 }
