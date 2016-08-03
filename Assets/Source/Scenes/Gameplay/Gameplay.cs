@@ -13,7 +13,14 @@ public class Gameplay : MonoBehaviour
 
 	void Start ()
     {
-        gameState.Init(Setup.GetQuiz());
+        if (Setup.GetQuiz().IsValid())
+        {
+            gameState.Init(Setup.GetQuiz());
+        }
+        else
+        {
+            Debug.Log("Unable to start. Quiz is not valid.");
+        }
 	}
 
     /* ui event */ public void OnExitClick()

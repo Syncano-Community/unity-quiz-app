@@ -1,15 +1,44 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class QuestionPanel : MonoBehaviour {
+public class QuestionPanel : MonoBehaviour
+{
+    [SerializeField]
+    private QuestionView questionView;
 
-	// Use this for initialization
-	void Start () {
-	
-	}
-	
-	// Update is called once per frame
-	void Update () {
-	
-	}
+    [SerializeField]
+    private AnswerView[] answers = new AnswerView[4];
+
+    void Start()
+    {
+        SetPlayMode();
+        ClearViews();
+    }
+
+    public void SetPlayMode()
+    {
+        questionView.SetPlayMode();
+        foreach (var item in answers)
+        {
+            item.SetPlayMode();
+        }
+    }
+
+    public void SetEditMode()
+    {
+        questionView.SetEditMode();
+        foreach (var item in answers)
+        {
+            item.SetEditMode();
+        }
+    } 
+
+    public void ClearViews()
+    {
+        questionView.SetText(null);
+        foreach (var item in answers)
+        {
+            item.SetText(null);
+        }
+    }
 }

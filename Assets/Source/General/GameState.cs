@@ -25,4 +25,25 @@ public class GameState : MonoBehaviour
         this.phoneCall = true;
         this.audience = true;
     }
+
+    public void StartGame()
+    {
+        StartCoroutine(StartRoutine());
+    }
+
+    private IEnumerator StartRoutine()
+    {
+
+        yield return StartCoroutine(ShowQuestion());
+    }
+
+    private IEnumerator ShowQuestion()
+    {
+        return null;
+    }
+
+    private void SwitchToNextQuestion()
+    {
+        questionIndex += 1;
+    }
 }
