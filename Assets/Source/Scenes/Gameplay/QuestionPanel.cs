@@ -52,12 +52,12 @@ public class QuestionPanel : Singleton<QuestionPanel>
 
     public IEnumerator ShowQuestion(Question question)
     {
-        questionView.SetText(question.Text);
+        questionView.SetText(question.text);
         yield return new WaitForSeconds(1.0f);
 
         for (int i = 0; i < answers.Length; i++)
         {
-            answers[i].SetText(question.Answers[i]);
+            answers[i].SetText(question.answers[i]);
             yield return new WaitForSeconds(0.5f);
         }
     }

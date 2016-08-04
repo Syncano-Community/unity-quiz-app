@@ -9,26 +9,22 @@ public class Question
     /// <summary>
 	/// Quesion's ID.
 	/// </summary>
-    [SerializeField]
-    private long id;
+	public long id;
 
 	/// <summary>
 	/// Quesion's text.
 	/// </summary>
-    [SerializeField]
-    private string text;
+    public string text;
 
     /// <summary>
     /// Question difficulty.
     /// </summary>
-    [SerializeField]
-    private DifficultyType difficulty;
+	public DifficultyType difficultyType;
 
     /// <summary>
     /// Collection of answer strings.
     /// </summary>
-    [SerializeField]
-    private List<string> answers;
+	public List<string> answers;
 
     /// <summary>
     /// The index of the correct answer.
@@ -43,30 +39,6 @@ public class Question
     /// </summary>
     [NonSerialized]
     private List<AnswerType> availableAnswers = new List<AnswerType> { AnswerType.A, AnswerType.B, AnswerType.C, AnswerType.D };
-
-    public long Id
-    {
-        get { return id; }
-        set { id = value; }
-    }
-
-    public string Text
-    {
-        get { return text; }
-        set { text = value; }
-    }
-
-    public DifficultyType Difficulty
-    {
-        get { return difficulty; }
-        set { difficulty = value; }
-    }
-
-    public List<string> Answers
-    {
-        get { return answers; }
-        set { answers = value; }
-    }
 
     public AnswerType CorrectAnswer
     {
