@@ -1,0 +1,33 @@
+var _ = require("lodash")
+var Syncano = require("syncano");
+
+aclKey = "API_KEY";
+className = "questions";
+
+var connection = Syncano({apiKey: aclKey, 
+defaults: {instanceName : "unity-quiz-app", className: className} });
+
+var DataObject = connection.DataObject;
+
+
+var filter = {"IsValid":{"_eq":true}};
+var fields = ["Text", "Answers", "QuestionLevel"];
+
+DataObject.please().list().filter(filter)
+    .orderBy("QuestionLevel").fields(fields).then(function(dataobjects, raw) {
+
+    var to_return;
+    var number_of_questions_to_return = 1;
+    
+    var questions_with_lvl_easy = _.filter(raw.objects, function(o) { return o.QuestionLevel === 0 });
+    var questions_with_lvl_medium = _.filter(raw.objects, function(o) { return o.QuestionLevel === 1 });
+    var questions_with_lvl_hard = _.filter(raw.objects, function(o) { return o.QuestionLevel === 2 });
+    
+    questions_with_lvl_easy = _.sampleSize(questions_with_lvl_easy, number_of_questions_to_return);
+    questions_with_lvl_medium = _.sampleSize(questions_with_lvl_medium, number_of_questions_to_return);
+    questions_with_lvl_hard = _.sampleSize(questions_with_lvl_hard, number_of_questions_to_return);
+    
+    to_return = _.concat(questions_with_lvl_easy, questions_with_lvl_medium, questions_with_lvl_hard);
+    console.log(to_return);
+
+}).catch(function(err) { console.log(err);});
