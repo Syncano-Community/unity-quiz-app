@@ -3,7 +3,7 @@ using UnityEngine.UI;
 using System;
 using System.Collections;
 
-public class ScorePanel : Singleton<ScorePanel>
+public class ScorePanel : MonoBehaviour
 {
     [SerializeField]
     private GameObject scoreRowViewPrefab;

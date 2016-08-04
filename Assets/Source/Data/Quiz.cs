@@ -8,11 +8,11 @@ public class Quiz
     /// <summary>
     /// The questions.
     /// </summary>
-    public Question[] questions;
+    public Question[] questions = new Question[QUESTION_COUNT];
 
     public Question GetQuestion(int index)
     {
-        if (questions != null && index >= 0 && index < questions.Length - 1)
+        if (questions != null && index >= 0 && index < questions.Length)
             return questions[index];
 
         return null;
@@ -28,6 +28,14 @@ public class Quiz
         {
             throw new UnityException("Wrong index.");
         }
+    }
+
+    public int GetQuestionCount()
+    {
+        if (questions == null)
+            return 0;
+                
+        return questions.Length;
     }
 
     public bool IsValid()

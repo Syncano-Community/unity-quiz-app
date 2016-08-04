@@ -1,8 +1,8 @@
-﻿using UnityEngine;
+using UnityEngine;
 using System.Collections;
 using System;
 
-public class QuestionPanel : Singleton<QuestionPanel>
+public class QuestionPanel : MonoBehaviour
 {
     [SerializeField]
     private QuestionView questionView;
@@ -52,6 +52,7 @@ public class QuestionPanel : Singleton<QuestionPanel>
 
     public IEnumerator ShowQuestion(Question question)
     {
+        ClearViews();
         questionView.SetText(question.text);
         yield return new WaitForSeconds(1.0f);
 
@@ -59,6 +60,17 @@ public class QuestionPanel : Singleton<QuestionPanel>
         {
             answers[i].SetText(question.answers[i]);
             yield return new WaitForSeconds(0.5f);
+        }
+    }
+
+    public IEnumerator ShowAnswer(AnswerType correctAnswer, AnswerType selectedAnswer)
+    {
+        for (int i = 0; i < 3; i++)
+        {
+            yield return new WaitForSeconds(0.2f);
+            // Highlight on
+            yield return new WaitForSeconds(0.2f);
+            // Highlight off
         }
     }
 

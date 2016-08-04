@@ -8,11 +8,11 @@ public class GameState : MonoBehaviour
 
     #region Current question
     private int questionIndex;
+    private Question currentQuestion; 
     #endregion Current question
 
     #region Views
-    private QuestionPanel questionPanel;
-    private ScorePanel scorePanel;
+    private GameUI gameUI;
     #endregion Views
 
     #region Lifelines
@@ -29,11 +29,10 @@ public class GameState : MonoBehaviour
         this.phoneCall = true;
         this.audience = true;
 
-        questionPanel = QuestionPanel.Instance;
-        scorePanel = ScorePanel.Instance;
+        gameUI = GameUI.Instance;
 
-        questionPanel.SetOnAnswerSelectedListener(OnAnswerSelected);
-        scorePanel.SetOnLifelineSelectedListener(OnLifelineSelected);
+        gameUI.QuestionPanel.SetOnAnswerSelectedListener(OnAnswerSelected);
+        gameUI.ScorePanel.SetOnLifelineSelectedListener(OnLifelineSelected);
     }
 
     public void StartGame()
@@ -41,28 +40,56 @@ public class GameState : MonoBehaviour
         StartCoroutine(StartRoutine());
     }
 
+    public void FinishGame(bool isLastCorrect)
+    {
+        gameUI.ResultPanel.ShowReward();
+        Debug.Log("FinishGame isLastCorrect: " + isLastCorrect);
+    }
+
     private IEnumerator StartRoutine()
     {
         yield return new WaitForSeconds(1.0f);
-        yield return StartCoroutine(scorePanel.ShowOff());
+        yield return StartCoroutine(gameUI.ScorePanel.ShowOff());
 
-        Question question = quiz.GetQuestion(questionIndex);
-        question.Shuffle();
-        yield return StartCoroutine(questionPanel.ShowQuestion(question));
+        currentQuestion = quiz.GetQuestion(questionIndex);
+        currentQuestion.Shuffle();
+        yield return StartCoroutine(gameUI.QuestionPanel.ShowQuestion(currentQuestion));
     }
 
     private void SwitchToNextQuestion()
     {
         questionIndex += 1;
+        StartCoroutine(NextQuestionRoutine());
+    }
+
+    private IEnumerator NextQuestionRoutine()
+    {
+        currentQuestion = quiz.GetQuestion(questionIndex);
+        currentQuestion.Shuffle();
+        yield return StartCoroutine(gameUI.QuestionPanel.ShowQuestion(currentQuestion));
     }
 
     public void OnAnswerSelected(AnswerType answer)
     {
-        Debug.Log("Answer: " + answer.ToString());
+        bool correct = (currentQuestion.CorrectAnswer == answer);
+
+        if (IsLastQuestion() || correct == false)
+        {
+            FinishGame(correct);
+        }
+        else
+        {
+            SwitchToNextQuestion();
+        }
     }
 
     public void OnLifelineSelected(LifelineType lifeline)
     {
-        scorePanel.SetLifelineInteractable(lifeline, false);
+        gameUI.ScorePanel.SetLifelineInteractable(lifeline, false);
+    }
+
+    private bool IsLastQuestion()
+    {
+        return questionIndex == quiz.GetQuestionCount() - 1;
     }
 }

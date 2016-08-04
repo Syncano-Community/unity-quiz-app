@@ -1,8 +1,7 @@
 ﻿using UnityEngine;
-using UnityEngine.SceneManagement;
 using System.Collections;
 
-public class Gameplay : MonoBehaviour
+public class Gameplay : Singleton<Gameplay>
 {
     private GameState gameState;
 
@@ -26,11 +25,6 @@ public class Gameplay : MonoBehaviour
 
     /* ui event */ public void OnExitClick()
     {
-        GoToMainMenu();
-    }
-
-    private void GoToMainMenu()
-    {
-        SceneManager.LoadScene(Constant.SCENE_MENU);
+        gameState.FinishGame(false);
     }
 }
