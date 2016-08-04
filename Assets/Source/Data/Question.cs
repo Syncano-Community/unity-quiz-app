@@ -2,45 +2,81 @@
 using System.Collections;
 using System.Collections.Generic;
 
+[System.Serializable]
 public class Question
 {
     /// <summary>
-	/// Gets or sets the quesion's ID.
+	/// Quesion's ID.
 	/// </summary>
 	/// <value>The Id.</value>
-	public string Id { get; set; }
+    [SerializeField]
+    private long id;
 
 	/// <summary>
-	/// Gets or sets the quesion's text.
+	/// Quesion's text.
 	/// </summary>
 	/// <value>The text.</value>
-	public string Text { get; set; }
+    [SerializeField]
+    private string text;
 
     /// <summary>
-    /// Gets or sets the question difficulty.
+    /// Question difficulty.
     /// </summary>
     /// <value>The difficulty.</value>
-    public QuestionLevel Difficulty { get; set; }
+    [SerializeField]
+    private QuestionLevel difficulty;
 
     /// <summary>
-    /// Gets or sets the answers.
+    /// Collection of answer strings.
     /// </summary>
     /// <value>The answers.</value>
-    public List<string> Answers { get; set; }
+    [SerializeField]
+    private List<string> answers;
 
     /// <summary>
-    /// Gets or sets the index of the correct answer in Answers.
+    /// The index of the correct answer.
     /// </summary>
     /// <value>The index of the correct answer.</value>
-    public int CorrectAnswerIndex { get; set; }
+    [SerializeField]
+    private int correctAnswerIndex;
+
+    public long Id
+    {
+        get { return id; }
+        set { id = value; }
+    }
+
+    public string Text
+    {
+        get { return text; }
+        set { text = value; }
+    }
+
+    public QuestionLevel Difficulty
+    {
+        get { return difficulty; }
+        set { difficulty = value; }
+    }
+
+    public List<string> Answers
+    {
+        get { return answers; }
+        set { answers = value; }
+    }
+
+    public int CorrectAnswerIndex
+    {
+        get { return correctAnswerIndex; }
+        set { correctAnswerIndex = value; }
+    }
 
     /// <summary>
     /// Modify answer order and correct index.
     /// </summary>
     public void Shuffle()
     {
-        string correct = Answers[CorrectAnswerIndex];
-        Answers.Shuffle();
-        CorrectAnswerIndex = Answers.IndexOf(correct);
+        string correct = answers[correctAnswerIndex];
+        answers.Shuffle();
+        CorrectAnswerIndex = answers.IndexOf(correct);
     }
 }

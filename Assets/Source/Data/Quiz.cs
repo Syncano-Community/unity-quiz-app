@@ -1,10 +1,16 @@
 ﻿using UnityEngine;
 using System.Collections;
 
+[System.Serializable]
 public class Quiz
 {
     public const int QUESTION_COUNT = 15;
-    private Question[] questions ;
+
+    /// <summary>
+    /// The questions.
+    /// </summary>
+    [SerializeField]
+    private Question[] questions;
 
     public Quiz ()
     {

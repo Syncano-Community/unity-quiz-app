@@ -48,7 +48,13 @@ public class QuestionPanel : Singleton<QuestionPanel>
     public IEnumerator ShowQuestion(Question question)
     {
         questionView.SetText(question.Text);
-        yield break;
+        yield return new WaitForSeconds(1.0f);
+
+        for (int i = 0; i < answers.Length; i++)
+        {
+            answers[i].SetText(question.Answers[i]);
+            yield return new WaitForSeconds(0.5f);
+        }
     }
 
     public void SetOnAnswerSelectedListener(Action<int> action)

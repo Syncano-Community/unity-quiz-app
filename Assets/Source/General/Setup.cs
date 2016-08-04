@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
 
 public struct Setup
 {
@@ -30,6 +31,9 @@ public struct Setup
             Question question = new Question();
             question.Text = "Question " + (i + 1);
             quiz.SetQuestion(i, question);
+
+            question.CorrectAnswerIndex = 0;
+            question.Answers = new List<string> { "Correct", "Wrong 1", "Wrong 2", "Wrong 3" };
         }
 
         return quiz;
