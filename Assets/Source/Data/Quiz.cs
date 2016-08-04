@@ -1,7 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-[System.Serializable]
 public class Quiz
 {
     public const int QUESTION_COUNT = 15;
@@ -9,13 +8,7 @@ public class Quiz
     /// <summary>
     /// The questions.
     /// </summary>
-    [SerializeField]
-    private Question[] questions;
-
-    public Quiz ()
-    {
-        questions = new Question[QUESTION_COUNT];
-    }
+    public Question[] questions;
 
     public Question GetQuestion(int index)
     {
@@ -49,4 +42,14 @@ public class Quiz
 
         return true;
     }
+
+	public static Quiz FromJson(string json)
+	{
+		if (string.IsNullOrEmpty(json))
+			return default(Quiz); // Return null for generic.
+
+		Quiz instance = new Quiz();
+		instance.questions = JsonHelper.GetJsonArray<Question>(json);
+		return instance;
+	}
 }
