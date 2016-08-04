@@ -32,7 +32,7 @@ public struct Setup
             question.Text = "Question " + (i + 1);
             quiz.SetQuestion(i, question);
 
-            question.CorrectAnswerIndex = 0;
+            question.CorrectAnswer = AnswerType.A;
             question.Answers = new List<string> { "Correct", "Wrong 1", "Wrong 2", "Wrong 3" };
         }
 

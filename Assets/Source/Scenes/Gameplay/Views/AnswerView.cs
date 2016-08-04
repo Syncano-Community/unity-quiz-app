@@ -12,6 +12,11 @@ public class AnswerView : InputFieldView
         button = GetComponent<Button>();
     }
 
+    public Button.ButtonClickedEvent onClick
+    {
+        get { return button.onClick; }
+    }
+
     public override void SetPlayMode ()
     {
         base.SetPlayMode ();

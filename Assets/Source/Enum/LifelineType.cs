@@ -1,4 +1,4 @@
-﻿public enum Lifeline
+﻿public enum LifelineType
 {
     FIFTY_FIFTY = 1,
     PHONE       = 2,

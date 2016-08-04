@@ -18,6 +18,7 @@ public class InputFieldView : MonoBehaviour
         inputFieldBackgroud.enabled = false;
         inputField.interactable = false;
         inputField.placeholder.gameObject.SetActive(false);
+        inputField.textComponent.raycastTarget = false;
     }
 
     public virtual void SetEditMode()
@@ -25,6 +26,7 @@ public class InputFieldView : MonoBehaviour
         inputFieldBackgroud.enabled = true;
         inputField.interactable = true;
         inputField.placeholder.gameObject.SetActive(true);
+        inputField.textComponent.raycastTarget = true;
     }
 
     public void SetText(string text)

@@ -1,44 +1,48 @@
 ﻿using UnityEngine;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 
-[System.Serializable]
+[Serializable]
 public class Question
 {
     /// <summary>
 	/// Quesion's ID.
 	/// </summary>
-	/// <value>The Id.</value>
     [SerializeField]
     private long id;
 
 	/// <summary>
 	/// Quesion's text.
 	/// </summary>
-	/// <value>The text.</value>
     [SerializeField]
     private string text;
 
     /// <summary>
     /// Question difficulty.
     /// </summary>
-    /// <value>The difficulty.</value>
     [SerializeField]
-    private QuestionLevel difficulty;
+    private DifficultyType difficulty;
 
     /// <summary>
     /// Collection of answer strings.
     /// </summary>
-    /// <value>The answers.</value>
     [SerializeField]
     private List<string> answers;
 
     /// <summary>
     /// The index of the correct answer.
+    /// Server always act like this value is 0. We use it only for shuffle.
     /// </summary>
-    /// <value>The index of the correct answer.</value>
-    [SerializeField]
-    private int correctAnswerIndex;
+    [NonSerialized]
+    private AnswerType correctAnswer = AnswerType.A;
+
+    /// <summary>
+    /// List of available answers.
+    /// This is information for lifelines.
+    /// </summary>
+    [NonSerialized]
+    private List<AnswerType> availableAnswers = new List<AnswerType> { AnswerType.A, AnswerType.B, AnswerType.C, AnswerType.D };
 
     public long Id
     {
@@ -52,7 +56,7 @@ public class Question
         set { text = value; }
     }
 
-    public QuestionLevel Difficulty
+    public DifficultyType Difficulty
     {
         get { return difficulty; }
         set { difficulty = value; }
@@ -64,10 +68,16 @@ public class Question
         set { answers = value; }
     }
 
-    public int CorrectAnswerIndex
+    public AnswerType CorrectAnswer
     {
-        get { return correctAnswerIndex; }
-        set { correctAnswerIndex = value; }
+        get { return correctAnswer; }
+        set { correctAnswer = value; }
+    }
+
+    public List<AnswerType> AvailableAnswers
+    {
+        get { return availableAnswers; }
+        set { availableAnswers = value; }
     }
 
     /// <summary>
@@ -75,8 +85,8 @@ public class Question
     /// </summary>
     public void Shuffle()
     {
-        string correct = answers[correctAnswerIndex];
+        string correct = answers[(int)correctAnswer];
         answers.Shuffle();
-        CorrectAnswerIndex = answers.IndexOf(correct);
+        correctAnswer = (AnswerType)answers.IndexOf(correct);
     }
 }

@@ -1,10 +1,14 @@
 ﻿using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
 
 public class GameState : MonoBehaviour
 {
     private Quiz quiz;
+
+    #region Current question
     private int questionIndex;
+    #endregion Current question
 
     #region Views
     private QuestionPanel questionPanel;
@@ -52,12 +56,12 @@ public class GameState : MonoBehaviour
         questionIndex += 1;
     }
 
-    public void OnAnswerSelected(int answerIndex)
+    public void OnAnswerSelected(AnswerType answer)
     {
-
+        Debug.Log("Answer: " + answer.ToString());
     }
 
-    public void OnLifelineSelected(Lifeline lifeline)
+    public void OnLifelineSelected(LifelineType lifeline)
     {
         scorePanel.SetLifelineInteractable(lifeline, false);
     }

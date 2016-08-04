@@ -22,7 +22,7 @@ public class ScorePanel : Singleton<ScorePanel>
 
     private ScoreRowView[] rows;
 
-    private Action<Lifeline> onLifelineSelected;
+    private Action<LifelineType> onLifelineSelected;
 
 	void Start ()
     {
@@ -36,17 +36,17 @@ public class ScorePanel : Singleton<ScorePanel>
             rows[i] = row;
         }
 
-        fiftyFiftyButton.onClick.AddListener(()=> LifelineClicked(Lifeline.FIFTY_FIFTY));
-        phoneButton.onClick.AddListener(()=> LifelineClicked(Lifeline.PHONE));
-        audienceButton.onClick.AddListener(()=> LifelineClicked(Lifeline.AUDIENCE));
+        fiftyFiftyButton.onClick.AddListener(()=> LifelineClicked(LifelineType.FIFTY_FIFTY));
+        phoneButton.onClick.AddListener(()=> LifelineClicked(LifelineType.PHONE));
+        audienceButton.onClick.AddListener(()=> LifelineClicked(LifelineType.AUDIENCE));
 	}
 
-    public void SetOnLifelineSelectedListener(Action<Lifeline> action)
+    public void SetOnLifelineSelectedListener(Action<LifelineType> action)
     {
         onLifelineSelected = action;
     }
 
-    public void SetLifelineInteractable(Lifeline lifeline, bool interactable)
+    public void SetLifelineInteractable(LifelineType lifeline, bool interactable)
     {
         Button button = GetLifelineButton(lifeline);
         button.interactable = interactable;
@@ -80,20 +80,20 @@ public class ScorePanel : Singleton<ScorePanel>
         transform.localScale = new Vector3(scale, scale, scale);
     }
 
-    private void LifelineClicked(Lifeline lifeline)
+    private void LifelineClicked(LifelineType lifeline)
     {
         if (onLifelineSelected != null)
             onLifelineSelected.Invoke(lifeline);
     }
 
-    private Button GetLifelineButton(Lifeline lifeline)
+    private Button GetLifelineButton(LifelineType lifeline)
     {
         switch (lifeline) {
-        case Lifeline.AUDIENCE:
+        case LifelineType.AUDIENCE:
             return audienceButton;
-        case Lifeline.FIFTY_FIFTY:
+        case LifelineType.FIFTY_FIFTY:
             return fiftyFiftyButton;
-        case Lifeline.PHONE:
+        case LifelineType.PHONE:
             return phoneButton;
         default:
             return null;

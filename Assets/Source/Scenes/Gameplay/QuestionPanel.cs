@@ -10,12 +10,17 @@ public class QuestionPanel : Singleton<QuestionPanel>
     [SerializeField]
     private AnswerView[] answers = new AnswerView[4];
 
-    private Action<int> onAnswerSelected;
+    private Action<AnswerType> onAnswerSelected;
 
     void Start()
     {
         SetPlayMode();
         ClearViews();
+
+        answers[(int)AnswerType.A].onClick.AddListener(()=> AnswerClicked(AnswerType.A));
+        answers[(int)AnswerType.B].onClick.AddListener(()=> AnswerClicked(AnswerType.B));
+        answers[(int)AnswerType.C].onClick.AddListener(()=> AnswerClicked(AnswerType.C));
+        answers[(int)AnswerType.D].onClick.AddListener(()=> AnswerClicked(AnswerType.D));
     }
 
     public void SetPlayMode()
@@ -57,8 +62,19 @@ public class QuestionPanel : Singleton<QuestionPanel>
         }
     }
 
-    public void SetOnAnswerSelectedListener(Action<int> action)
+    private void AnswerClicked(AnswerType answer)
+    {
+        if (onAnswerSelected != null)
+            onAnswerSelected.Invoke(answer);
+    }
+
+    public void SetOnAnswerSelectedListener(Action<AnswerType> action)
     {
         onAnswerSelected = action;
+    }
+
+    private AnswerView GetAnswerView(AnswerType answer)
+    {
+        return answers[(int)answer];
     }
 }
