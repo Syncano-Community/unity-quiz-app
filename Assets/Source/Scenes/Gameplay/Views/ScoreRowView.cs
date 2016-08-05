@@ -22,8 +22,8 @@ public class ScoreRowView : MonoBehaviour
     {
         this.scoreRow = scoreRow;
         indexText.text = (rowIndex + 1).ToString();
-        separatorImage.enabled = true;
         labelText.text = scoreRow.label;
+        ShowAnsweredMarker(false);
         SetHighlighted(false);
     }
 
@@ -49,5 +49,10 @@ public class ScoreRowView : MonoBehaviour
                 labelText.color = Colors.MAIN_COLOR;
             }
         }
+    }
+
+    public void ShowAnsweredMarker(bool show)
+    {
+        separatorImage.enabled = show;
     }
 }

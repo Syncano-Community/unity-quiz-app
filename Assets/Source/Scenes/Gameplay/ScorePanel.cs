@@ -57,6 +57,7 @@ public class ScorePanel : MonoBehaviour
         for (int i = 0; i < ScoreTable.GetRowCount(); i++)
         {
             rows[i].SetHighlighted(true);
+            rows[i].ShowAnsweredMarker(true);
             yield return new WaitForSeconds(0.15f);
             rows[i].SetHighlighted(false);
         }
@@ -73,6 +74,15 @@ public class ScorePanel : MonoBehaviour
         SetScale(audienceButton.transform, 1.2f);
         yield return new WaitForSeconds(0.35f);
         SetScale(audienceButton.transform, 1.0f);
+    }
+
+    public void SetLevel(int questionIndex)
+    {
+        for (int i = 0; i < ScoreTable.GetRowCount(); i++)
+        {
+            rows[i].SetHighlighted(i == questionIndex);
+            rows[i].ShowAnsweredMarker(i <= questionIndex);
+        }
     }
 
     private void SetScale(Transform transform, float scale)

@@ -53,20 +53,18 @@ public class GameState : MonoBehaviour
     {
         yield return new WaitForSeconds(1.0f);
         yield return StartCoroutine(gameUI.ScorePanel.ShowOff());
-
-        currentQuestion = quiz.GetQuestion(questionIndex);
-        currentQuestion.Shuffle();
-        yield return StartCoroutine(gameUI.QuestionPanel.ShowQuestion(currentQuestion));
+        yield return StartCoroutine(ShowQuestionRoutine());
     }
 
     private void SwitchToNextQuestion()
     {
         questionIndex += 1;
-        StartCoroutine(NextQuestionRoutine());
+        StartCoroutine(ShowQuestionRoutine());
     }
 
-    private IEnumerator NextQuestionRoutine()
+    private IEnumerator ShowQuestionRoutine()
     {
+        gameUI.ScorePanel.SetLevel(questionIndex);
         currentQuestion = quiz.GetQuestion(questionIndex);
         currentQuestion.Shuffle();
         yield return StartCoroutine(gameUI.QuestionPanel.ShowQuestion(currentQuestion));
