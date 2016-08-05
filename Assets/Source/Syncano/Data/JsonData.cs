@@ -17,4 +17,9 @@ public class JsonData<T>
 	{
 		return JsonUtility.ToJson(this, prettyPrint);
 	}
+
+	public void Populate(string json)
+	{
+		JsonUtility.FromJsonOverwrite(json, this);
+	}
 }

@@ -11,7 +11,7 @@ public class MainMenu : MonoBehaviour
     {
         loadingScreen.SetActive(false);
         syncano = SyncanoClient.Instance;
-        syncano.InstanceName = "unity-quiz-app";
+		syncano.Init(Constant.API_KEY, Constant.INSTANCE_NAME);
 	}
 
     /* ui event */ public void OnPlayClick()
@@ -44,7 +44,7 @@ public class MainMenu : MonoBehaviour
     {
         Debug.LogWarning("Add error string and response code to Response.");
         //if (response.error != null)
-        Quiz quiz = Quiz.FromJson(response.resultJSON);
+		Quiz quiz = Quiz.FromJson(response.stdout);
         StartGame(quiz);
     }
 

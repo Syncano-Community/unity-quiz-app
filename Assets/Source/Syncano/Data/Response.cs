@@ -19,9 +19,21 @@ public class Response : JsonData<Response>
 	public Result result;
 
 	/// <summary>
+	/// The error code.
+	/// </summary>
+	[System.NonSerialized]
+	public long responseCode;
+
+	[System.NonSerialized]
+	public string webError;
+
+
+	public string stderr { get { return result.stderr; } }
+
+	/// <summary>
 	/// Shortcut to get JSON response.
 	/// </summary>
-	public string resultJSON { get { return result.stdout;}}
+	public string stdout { get { return result.stdout; } }
 
 	/// <summary>
 	/// Class for holding error and output string.
