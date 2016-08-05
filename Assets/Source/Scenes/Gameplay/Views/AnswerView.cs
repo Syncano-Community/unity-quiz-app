@@ -28,7 +28,7 @@ public class AnswerView : InputFieldView
 
     public void SetInteractable(bool interactable)
     {
-        button.interactable = interactable;
+        button.enabled = interactable;
     }
 
     public override void SetPlayMode ()
