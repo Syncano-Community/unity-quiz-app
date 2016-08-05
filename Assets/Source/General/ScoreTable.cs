@@ -3,6 +3,8 @@ using System.Collections;
 
 public class ScoreTable
 {
+    public static readonly ScoreRow zero = new ScoreRow("0", 0, true);
+
     public static readonly ScoreRow[] rows = {
         /* 01 */ new ScoreRow("100", 100, false),
         /* 02 */ new ScoreRow("200", 200, false),
@@ -31,14 +33,25 @@ public class ScoreTable
         return rows.Length;
     }
 
-    public static ScoreRow GetLastGuaranteed(int index)
+    /// <summary>
+    /// Gets the score for last correct answer index;
+    /// </summary>
+    public static ScoreRow GetScoreForIndex(int index, bool giveUp)
     {
+        if (giveUp)
+        {
+            if (index >= 0)
+                return rows[index];
+            
+            return zero;
+        }
+
         for (int i = index; i >= 0; i--)
         {
             if (rows[index].isGuaranteed)
                 return rows[index];
         }
 
-        return null;
+        return zero;
     }
 }

@@ -8,6 +8,7 @@ public class GameState : MonoBehaviour
 
     #region Current question
     private int questionIndex;
+    private int lastCorrectAnswerIndex;
     private Question currentQuestion; 
     #endregion Current question
 
@@ -25,6 +26,8 @@ public class GameState : MonoBehaviour
     {
         this.quiz = quiz;
         this.questionIndex = 0;
+        this.lastCorrectAnswerIndex = -1;
+        this.currentQuestion = null;
         this.fiftyFifty = true;
         this.phoneCall = true;
         this.audience = true;
@@ -40,10 +43,10 @@ public class GameState : MonoBehaviour
         StartCoroutine(StartRoutine());
     }
 
-    public void FinishGame(bool isLastCorrect)
+    public void FinishGame(bool giveUp)
     {
-        gameUI.ResultPanel.ShowReward();
-        Debug.Log("FinishGame isLastCorrect: " + isLastCorrect);
+        ScoreRow score = ScoreTable.GetScoreForIndex(lastCorrectAnswerIndex, giveUp);
+        gameUI.ResultPanel.ShowReward(score);
     }
 
     private IEnumerator StartRoutine()
@@ -73,9 +76,12 @@ public class GameState : MonoBehaviour
     {
         bool correct = (currentQuestion.CorrectAnswer == answer);
 
+        if (correct)
+            lastCorrectAnswerIndex = questionIndex;
+
         if (IsLastQuestion() || correct == false)
         {
-            FinishGame(correct);
+            FinishGame(false);
         }
         else
         {

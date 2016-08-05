@@ -25,6 +25,6 @@ public class Gameplay : Singleton<Gameplay>
 
     /* ui event */ public void OnExitClick()
     {
-        gameState.FinishGame(false);
+        gameState.FinishGame(true);
     }
 }
