@@ -35,17 +35,47 @@ public class MainMenu : MonoBehaviour
         loadingScreen.SetActive(true);
     }
 
+    private void HideLoadingScreen()
+    {
+        loadingScreen.SetActive(false);
+    }
+
     private void DownloadQuestions()
     {
-        StartCoroutine(syncano.CallScriptEndpoint("d019a1036c7ec1348713de2770385b728f050ed1", "get_questions", OnQuestionsDownloaded));
+        syncano.CallScriptEndpointAsync("d019a1036c7ec1348713de2770385b728f050ed1", "get_questions", OnQuestionsDownloaded);
     }
 
     private void OnQuestionsDownloaded(Response response)
     {
-        Debug.LogWarning("Add error string and response code to Response.");
-        //if (response.error != null)
-		Quiz quiz = Quiz.FromJson(response.stdout);
-        StartGame(quiz);
+        if (string.IsNullOrEmpty(response.webError) == false)
+        {
+            HandleError(response);
+        }
+        else
+        {
+            Debug.Log("response: " + response.stderr);
+            Quiz quiz = Quiz.FromJson(response.stdout);
+            if (quiz.IsValid())
+            {
+                StartGame(quiz);
+            }
+            else
+            {
+                HandleNotValidQuiz(quiz);
+            }
+        }
+    }
+
+    private void HandleError(Response response)
+    {
+        Debug.Log("Error: " + response.webError);
+        HideLoadingScreen();
+    }
+
+    private void HandleNotValidQuiz(Quiz quiz)
+    {
+        Debug.Log("Quiz not valid!");
+        HideLoadingScreen();
     }
 
     private void StartGame(Quiz quiz)

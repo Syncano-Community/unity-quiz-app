@@ -44,7 +44,7 @@ public class Quiz
             return false;
 
         foreach (var item in questions) {
-            if (item == null)
+            if (item == null || item.IsValid() == false)
                 return false;
         }
 

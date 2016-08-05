@@ -52,6 +52,26 @@ public class Question
         set { availableAnswers = value; }
     }
 
+    public bool IsValid()
+    {
+        if (string.IsNullOrEmpty(text))
+            return false;
+
+        if (id <= 0)
+            return false;
+
+        if (answers == null || answers.Count != 4)
+            return false;
+
+        foreach (var item in answers)
+        {
+            if (string.IsNullOrEmpty(item))
+                return false;
+        }
+
+        return true;
+    }
+
     /// <summary>
     /// Modify answer order and correct index.
     /// </summary>
