@@ -1,33 +1,46 @@
-var _ = require("lodash")
-var Syncano = require("syncano");
+//include Syncano
+var Syncano = require("syncano"); 
+ //include lodash library 
+var _ = require("lodash");
 
-aclKey = "API_KEY";
-className = "questions";
+//API key with ignoer ACL permission
+api_key = "API_KEY"; 
+//class name which we take data from
+class_name = "questions"; 
 
-var connection = Syncano({apiKey: aclKey, 
-defaults: {instanceName : "unity-quiz-app", className: className} });
+//Syncano object instance
+var connection = Syncano({apiKey: api_key, 
+defaults: {instanceName : "unity-quiz-app", className: class_name} }); 
 
-var DataObject = connection.DataObject;
+var DataObject = connection.DataObject; //data object we operate on
 
+//we use this variable to filter valid only questions
+var filter = {"isValid":{"_eq":true}}; 
+ //exclusive fields we want to return only
+var fields = ["text", "answers", "difficultyType", "id"];
 
-var filter = {"IsValid":{"_eq":true}};
-var fields = ["Text", "Answers", "QuestionLevel"];
+var list_of_questions = DataObject.please().list(); //get all questions
 
-DataObject.please().list().filter(filter)
-    .orderBy("QuestionLevel").fields(fields).then(function(dataobjects, raw) {
-
-    var to_return;
-    var number_of_questions_to_return = 1;
+list_of_questions.filter(filter) //filter validated questions, then order by difficulty level and take only fields specified in fields variable
+    .orderBy("difficultyType").fields(fields).then(function(dataobjects, raw) {
+        
+    // number of questions to return per difficulty level
+    var number_of_questions_to_return = 5; 
     
-    var questions_with_lvl_easy = _.filter(raw.objects, function(o) { return o.QuestionLevel === 0 });
-    var questions_with_lvl_medium = _.filter(raw.objects, function(o) { return o.QuestionLevel === 1 });
-    var questions_with_lvl_hard = _.filter(raw.objects, function(o) { return o.QuestionLevel === 2 });
+    //._filter(...) is an example of usage lodash library to filter objects
+    var questions_with_lvl_easy   = _.filter(raw.objects, function(o) { return o.difficultyType === 0 });
+    var questions_with_lvl_medium = _.filter(raw.objects, function(o) { return o.difficultyType === 1 });
+    var questions_with_lvl_hard   = _.filter(raw.objects, function(o) { return o.difficultyType === 2 });
     
-    questions_with_lvl_easy = _.sampleSize(questions_with_lvl_easy, number_of_questions_to_return);
+    //get five random questions per difficulty level. we also use _.sampleSize function from lodash library
+    questions_with_lvl_easy   = _.sampleSize(questions_with_lvl_easy, number_of_questions_to_return);
     questions_with_lvl_medium = _.sampleSize(questions_with_lvl_medium, number_of_questions_to_return);
-    questions_with_lvl_hard = _.sampleSize(questions_with_lvl_hard, number_of_questions_to_return);
+    questions_with_lvl_hard   = _.sampleSize(questions_with_lvl_hard, number_of_questions_to_return);
     
-    to_return = _.concat(questions_with_lvl_easy, questions_with_lvl_medium, questions_with_lvl_hard);
-    console.log(to_return);
+    //merge three lists with questions into one
+    var to_return = _.concat(questions_with_lvl_easy, questions_with_lvl_medium, questions_with_lvl_hard);
+    
+    //return list of questions in JSON format
+    console.log(JSON.stringify(to_return));
 
 }).catch(function(err) { console.log(err);});
