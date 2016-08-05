@@ -86,7 +86,14 @@ public class GameState : MonoBehaviour
             gameUI.FoxPanel.PlayIncorrect();
         }
 
-        if (IsLastQuestion() || correct == false)
+        StartCoroutine(ShowAnswerRoutine(IsLastQuestion(), correct, answer, currentQuestion.CorrectAnswer));
+    }
+
+    private IEnumerator ShowAnswerRoutine(bool isLast, bool isCorrect, AnswerType selected, AnswerType correct)
+    {
+        yield return StartCoroutine(gameUI.QuestionPanel.ShowAnswer(selected, correct));
+
+        if (isLast || isCorrect == false)
         {
             FinishGame(false);
         }
@@ -96,7 +103,7 @@ public class GameState : MonoBehaviour
         }
     }
 
-    public void OnLifelineSelected(LifelineType lifeline)
+    private void OnLifelineSelected(LifelineType lifeline)
     {
         gameUI.ScorePanel.SetLifelineInteractable(lifeline, false);
     }

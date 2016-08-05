@@ -61,16 +61,43 @@ public class QuestionPanel : MonoBehaviour
             answers[i].SetText(question.answers[i]);
             yield return new WaitForSeconds(0.5f);
         }
+
+        SetInteractable(true);
     }
 
-    public IEnumerator ShowAnswer(AnswerType correctAnswer, AnswerType selectedAnswer)
+    public IEnumerator ShowAnswer(AnswerType selected, AnswerType correct)
     {
-        for (int i = 0; i < 3; i++)
+        SetInteractable(false);
+
+        bool incorrect = (selected != correct);
+        AnswerView selectedView = GetAnswerView(selected);
+        AnswerView correctView = GetAnswerView(correct);
+
+
+
+        for (int i = 0; i < 5; i++)
         {
-            yield return new WaitForSeconds(0.2f);
+            yield return new WaitForSeconds(0.3f);
+
             // Highlight on
-            yield return new WaitForSeconds(0.2f);
+            correctView.HighlightCorrect();
+            if (incorrect)
+                selectedView.HiglightIncorrect();
+            
+            yield return new WaitForSeconds(0.3f);
+
             // Highlight off
+            correctView.HiglightOff();
+            if (incorrect)
+                selectedView.HiglightOff();
+        }
+    }
+
+    private void SetInteractable(bool interactable)
+    {
+        foreach (var item in answers)
+        {
+            item.SetInteractable(interactable);    
         }
     }
 
