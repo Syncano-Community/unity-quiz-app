@@ -77,7 +77,14 @@ public class GameState : MonoBehaviour
         bool correct = (currentQuestion.CorrectAnswer == answer);
 
         if (correct)
+        {
             lastCorrectAnswerIndex = questionIndex;
+            gameUI.FoxPanel.PlayCorrect();
+        }
+        else
+        {
+            gameUI.FoxPanel.PlayIncorrect();
+        }
 
         if (IsLastQuestion() || correct == false)
         {
