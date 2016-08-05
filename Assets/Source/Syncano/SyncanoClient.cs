@@ -40,6 +40,7 @@ public class SyncanoClient : SelfInstantiatingSingleton<SyncanoClient>
 
 		else
 		{
+            Debug.Log(webRequest.downloadHandler.text);
 			Response response = Response.FromJson(webRequest.downloadHandler.text);
 			callback (response);
 		}

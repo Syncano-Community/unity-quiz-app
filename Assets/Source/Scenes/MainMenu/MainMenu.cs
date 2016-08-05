@@ -5,10 +5,13 @@ using System.Collections;
 public class MainMenu : MonoBehaviour
 {
     public GameObject loadingScreen;
+    private SyncanoClient syncano; 
 
 	void Start ()
     {
         loadingScreen.SetActive(false);
+        syncano = SyncanoClient.Instance;
+        syncano.InstanceName = "unity-quiz-app";
 	}
 
     /* ui event */ public void OnPlayClick()
@@ -34,18 +37,15 @@ public class MainMenu : MonoBehaviour
 
     private void DownloadQuestions()
     {
-        StartCoroutine(MockDownload());
+        StartCoroutine(syncano.CallScriptEndpoint("d019a1036c7ec1348713de2770385b728f050ed1", "get_questions", OnQuestionsDownloaded));
     }
 
-    private IEnumerator MockDownload()
+    private void OnQuestionsDownloaded(Response response)
     {
-        yield return new WaitForSeconds(2);
-        OnQuestionsDownloaded(null);
-    }
-
-    private void OnQuestionsDownloaded(string json)
-    {
-        StartGame(null);
+        Debug.LogWarning("Add error string and response code to Response.");
+        //if (response.error != null)
+        Quiz quiz = Quiz.FromJson(response.resultJSON);
+        StartGame(quiz);
     }
 
     private void StartGame(Quiz quiz)
