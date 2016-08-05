@@ -1,6 +1,9 @@
 ﻿using UnityEngine;
 using System.Collections;
 
+/// <summary>
+/// Wrapper class for getting response from Syncano.
+/// </summary>
 public class Response : JsonData<Response>
 {
 	/// <summary>
@@ -19,19 +22,24 @@ public class Response : JsonData<Response>
 	public Result result;
 
 	/// <summary>
-	/// The error code.
+	/// The web response code.
 	/// </summary>
 	[System.NonSerialized]
 	public long responseCode;
 
+	/// <summary>
+	/// The web error.
+	/// </summary>
 	[System.NonSerialized]
 	public string webError;
 
-
+	/// <summary>
+	/// Shortcut for error message.
+	/// </summary>
 	public string stderr { get { return result.stderr; } }
 
 	/// <summary>
-	/// Shortcut to get JSON response.
+	/// Shortcut for serialized Output in JSON.
 	/// </summary>
 	public string stdout { get { return result.stdout; } }
 
@@ -50,6 +58,5 @@ public class Response : JsonData<Response>
 		/// Serialized Output in JSON.
 		/// </summary>
 		public string stdout;
-
 	}
 }
