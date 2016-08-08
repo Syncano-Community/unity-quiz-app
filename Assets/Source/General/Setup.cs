@@ -29,6 +29,7 @@ public struct Setup
         Quiz quiz = new Quiz();
         for (int i = 0; i < Quiz.QUESTION_COUNT; i++) {
             Question question = new Question();
+            question.id = i + 1;
             question.text = "Question " + (i + 1);
             quiz.SetQuestion(i, question);
 

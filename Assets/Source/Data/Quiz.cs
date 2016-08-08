@@ -41,11 +41,17 @@ public class Quiz
     public bool IsValid()
     {
         if (questions == null || questions.Length != QUESTION_COUNT)
+        {
+            Debug.LogWarning("Wrong number of questions.");
             return false;
+        }
 
         foreach (var item in questions) {
             if (item == null || item.IsValid() == false)
+            {
+                Debug.LogWarning("Invalid question (id: " + item.id + ")");
                 return false;
+            }
         }
 
         return true;

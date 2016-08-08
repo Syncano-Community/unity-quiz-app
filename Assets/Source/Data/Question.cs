@@ -55,18 +55,30 @@ public class Question
     public bool IsValid()
     {
         if (string.IsNullOrEmpty(text))
+        {
+            Debug.LogWarning("Missing question text - id: " + id);
             return false;
+        }
 
         if (id <= 0)
+        {
+            Debug.LogWarning("Missing question id.");
             return false;
+        }
 
         if (answers == null || answers.Count != 4)
+        {
+            Debug.LogWarning("Not eough answers - id: " + id);   
             return false;
+        }
 
         foreach (var item in answers)
         {
             if (string.IsNullOrEmpty(item))
+            {
+                Debug.LogWarning("Missing answer - id: " + id);
                 return false;
+            }
         }
 
         return true;
