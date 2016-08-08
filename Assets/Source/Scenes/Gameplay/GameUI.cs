@@ -7,6 +7,7 @@ public class GameUI : Singleton<GameUI>
     public ScorePanel ScorePanel { get; private set; }
     public ResultPanel ResultPanel { get; private set; }
     public FoxPanel FoxPanel { get; private set; }
+    public LifelinesPanel LifelinesPanel { get; private set; }
 
     void Awake ()
     {
@@ -14,5 +15,6 @@ public class GameUI : Singleton<GameUI>
         ScorePanel = transform.GetComponentInChildren<ScorePanel>(true);
         ResultPanel = transform.GetComponentInChildren<ResultPanel>(true);
         FoxPanel = transform.GetComponentInChildren<FoxPanel>(true);
+        LifelinesPanel = transform.GetComponentInChildren<LifelinesPanel>(true);
     }
 }

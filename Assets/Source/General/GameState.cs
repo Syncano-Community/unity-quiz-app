@@ -84,6 +84,7 @@ public class GameState : MonoBehaviour
             gameUI.FoxPanel.PlayIncorrect();
         }
 
+        gameUI.LifelinesPanel.HideLifelines();
         StartCoroutine(ShowAnswerRoutine(IsLastQuestion(), correct, answer, currentQuestion.CorrectAnswer));
     }
 
@@ -104,6 +105,7 @@ public class GameState : MonoBehaviour
     private void OnLifelineSelected(LifelineType lifeline)
     {
         gameUI.ScorePanel.SetLifelineInteractable(lifeline, false);
+        gameUI.LifelinesPanel.ShowLifeline(lifeline, currentQuestion);
     }
 
     private bool IsLastQuestion()
