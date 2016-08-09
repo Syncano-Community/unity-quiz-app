@@ -21,18 +21,15 @@ public class FiftyFiftyPanel : LifelinePanelBase
 
         while (true)
         {
-            fillImage.fillAmount = fill;
             fill += 1 * Time.deltaTime;
+            fillImage.fillAmount = Mathf.Min(fill, 1);
 
             if (fill >= 1)
-            {
-                fill = 1;
                 break;
-            }
+            
             yield return null;
         }
 
-        fillImage.fillAmount = fill;
         OnLifelineShown(question);
     }
 
