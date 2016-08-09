@@ -11,6 +11,7 @@ public class QuestionPanel : MonoBehaviour
     private AnswerView[] answers = new AnswerView[4];
 
     private Action<AnswerType> onAnswerSelected;
+    private Question currentQuestion;
 
     void Start()
     {
@@ -52,6 +53,7 @@ public class QuestionPanel : MonoBehaviour
 
     public IEnumerator ShowQuestion(Question question)
     {
+        currentQuestion = question;
         ClearViews();
         questionView.SetText(question.text);
         yield return new WaitForSeconds(1.0f);
@@ -90,6 +92,23 @@ public class QuestionPanel : MonoBehaviour
             correctView.HiglightOff();
             if (incorrect)
                 selectedView.HiglightOff();
+        }
+    }
+
+    public void RefreshAvailableAnswers()
+    {
+        for (int i = 0; i < answers.Length; i++)
+        {
+            if (currentQuestion.AvailableAnswers.Contains((AnswerType) i))
+            {
+                answers[i].SetInteractable(true);
+                answers[i].SetText(currentQuestion.answers[i]);
+            }
+            else
+            {
+                answers[i].SetInteractable(false);
+                answers[i].SetText(null);
+            }
         }
     }
 

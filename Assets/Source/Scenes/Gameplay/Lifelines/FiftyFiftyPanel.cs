@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
 using System.Collections;
+using System.Collections.Generic;
 
 public class FiftyFiftyPanel : LifelinePanelBase
 {
@@ -11,10 +12,10 @@ public class FiftyFiftyPanel : LifelinePanelBase
     {
         base.Show (question);
         fillImage.fillAmount = 0;
-        StartCoroutine(ShowLifeline());
+        StartCoroutine(ShowLifeline(question));
     }
 
-    public IEnumerator ShowLifeline()
+    public IEnumerator ShowLifeline(Question question)
     {
         float fill = 0;
 
@@ -32,12 +33,29 @@ public class FiftyFiftyPanel : LifelinePanelBase
         }
 
         fillImage.fillAmount = fill;
-        OnLifelineShown();
+        OnLifelineShown(question);
     }
 
-    private void OnLifelineShown()
+    private void OnLifelineShown(Question question)
     {
-        //Debug.Log("Shown");
-        // remove two options
+        RemoveTwoIncorrect(question);
+        GameUI.Instance.QuestionPanel.RefreshAvailableAnswers();
+    }
+
+    private void RemoveTwoIncorrect(Question question)
+    {
+        question.AvailableAnswers.Shuffle();
+
+        while (question.AvailableAnswers.Count > 2)
+        {
+            for (int i = 0; i < question.AvailableAnswers.Count; i++)
+            {
+                if (question.AvailableAnswers[i] != question.CorrectAnswer)
+                {
+                    question.AvailableAnswers.RemoveAt(i);
+                    break; // Look for next - index has moved.
+                }
+            }
+        }
     }
 }
