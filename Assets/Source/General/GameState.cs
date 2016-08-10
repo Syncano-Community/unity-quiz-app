@@ -16,21 +16,12 @@ public class GameState : MonoBehaviour
     private GameUI gameUI;
     #endregion Views
 
-    #region Lifelines
-    private bool fiftyFifty;
-    private bool phoneCall;
-    private bool audience;
-    #endregion Lifelines
-
     public void Init(Quiz quiz)
     {
         this.quiz = quiz;
         this.questionIndex = 0;
         this.lastCorrectAnswerIndex = -1;
         this.currentQuestion = null;
-        this.fiftyFifty = true;
-        this.phoneCall = true;
-        this.audience = true;
 
         gameUI = GameUI.Instance;
 
@@ -52,7 +43,10 @@ public class GameState : MonoBehaviour
     private IEnumerator StartRoutine()
     {
         yield return new WaitForSeconds(1.0f);
-        yield return StartCoroutine(gameUI.ScorePanel.ShowOff());
+
+        if (Application.platform != RuntimePlatform.OSXEditor && Application.platform != RuntimePlatform.WindowsEditor)
+            yield return StartCoroutine(gameUI.ScorePanel.ShowOff());
+        
         yield return StartCoroutine(ShowQuestionRoutine());
     }
 

@@ -24,13 +24,13 @@ public class ChartBarView : MonoBehaviour
 
         while (true)
         {
-            value += 40f * Time.deltaTime;
-            fillImage.fillAmount = (float)value / 100.0f;
+            fillImage.fillAmount = value / 100.0f;
             percentageText.text = ((int)value).ToString() + "%";
 
             if (value >= percent)
                 break;
 
+            value = Mathf.Min(100, value + (40f * Time.deltaTime));
             yield return null;
         }
     }

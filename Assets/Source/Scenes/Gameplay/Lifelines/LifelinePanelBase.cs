@@ -29,4 +29,24 @@ public class LifelinePanelBase : MonoBehaviour
         color.a = alpha;
         image.color = color;
     }
+
+    public bool ShouldPickCorrect(DifficultyType difficulty)
+    {
+        int correctChance = 100;
+
+        switch (difficulty)
+        {
+        case DifficultyType.EASY:
+            correctChance -= 10;
+            break;
+        case DifficultyType.MEDIUM:
+            correctChance -= 25;
+            break;
+        case DifficultyType.HARD:
+            correctChance -= 50;
+            break;
+        }
+
+        return (Random.Range(0, 100) < correctChance);
+    }
 }

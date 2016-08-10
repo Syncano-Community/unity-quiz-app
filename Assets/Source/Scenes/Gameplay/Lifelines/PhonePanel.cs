@@ -56,22 +56,7 @@ public class PhonePanel : LifelinePanelBase
 
     private AnswerType GetSuggestedAnswer(Question question)
     {
-        int correctChance = 100;
-
-        switch (question.difficultyType)
-        {
-        case DifficultyType.EASY:
-            correctChance -= 5;
-            break;
-        case DifficultyType.MEDIUM:
-            correctChance -= 25;
-            break;
-        case DifficultyType.HARD:
-            correctChance -= 50;
-            break;
-        }
-
-        bool pickCorrect = (Random.Range(0, 100) <= correctChance);
+        bool pickCorrect = ShouldPickCorrect(question.difficultyType);
         question.AvailableAnswers.Shuffle();
 
         if (pickCorrect)
