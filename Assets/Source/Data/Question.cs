@@ -4,7 +4,7 @@ using System.Collections;
 using System.Collections.Generic;
 
 [Serializable]
-public class Question
+public class Question : JsonData<Question>
 {
     /// <summary>
 	/// Quesion's ID.
@@ -57,12 +57,6 @@ public class Question
         if (string.IsNullOrEmpty(text))
         {
             Debug.LogWarning("Missing question text - id: " + id);
-            return false;
-        }
-
-        if (id <= 0)
-        {
-            Debug.LogWarning("Missing question id.");
             return false;
         }
 

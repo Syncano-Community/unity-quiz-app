@@ -29,6 +29,11 @@ public class InputFieldView : MonoBehaviour
         inputField.textComponent.raycastTarget = true;
     }
 
+    public string GetText()
+    {
+        return inputField.text;
+    }
+
     public void SetText(string text)
     {
         inputField.text = text;

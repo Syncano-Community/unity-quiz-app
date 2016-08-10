@@ -40,6 +40,7 @@ public class QuestionPanel : MonoBehaviour
         {
             item.SetEditMode();
         }
+        answers[(int)AnswerType.A].HighlightCorrect();
     } 
 
     public void ClearViews()
@@ -131,7 +132,12 @@ public class QuestionPanel : MonoBehaviour
         onAnswerSelected = action;
     }
 
-    private AnswerView GetAnswerView(AnswerType answer)
+    public QuestionView GetQuestionView()
+    {
+        return questionView;
+    }
+
+    public AnswerView GetAnswerView(AnswerType answer)
     {
         return answers[(int)answer];
     }
