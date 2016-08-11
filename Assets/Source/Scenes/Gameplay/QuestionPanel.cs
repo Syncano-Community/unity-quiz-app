@@ -13,7 +13,7 @@ public class QuestionPanel : MonoBehaviour
     private Action<AnswerType> onAnswerSelected;
     private Question currentQuestion;
 
-    void Start()
+    void Awake()
     {
         SetPlayMode();
         ClearViews();
