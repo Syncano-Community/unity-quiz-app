@@ -49,6 +49,7 @@ public class QuestionPanel : MonoBehaviour
         foreach (var item in answers)
         {
             item.SetText(null);
+            answers[(int)AnswerType.A].HiglightOff();
         }
     }
 

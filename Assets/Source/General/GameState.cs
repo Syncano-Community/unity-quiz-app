@@ -59,14 +59,21 @@ public class GameState : MonoBehaviour
     private IEnumerator ShowQuestionRoutine()
     {
         gameUI.ScorePanel.SetLevel(questionIndex);
-        currentQuestion = quiz.GetQuestion(questionIndex);
-        currentQuestion.Shuffle();
-        yield return StartCoroutine(gameUI.QuestionPanel.ShowQuestion(currentQuestion));
+        Question newQuestion = quiz.GetQuestion(questionIndex);
+        newQuestion.Shuffle();
+        yield return StartCoroutine(gameUI.QuestionPanel.ShowQuestion(newQuestion));
+        currentQuestion = newQuestion;
     }
 
     public void OnAnswerSelected(AnswerType answer)
     {
-        bool correct = (currentQuestion.CorrectAnswer == answer);
+        if (currentQuestion == null)
+            return;
+
+        Question question = currentQuestion;
+        currentQuestion = null; // Don't allow interactions untill new question is set.
+
+        bool correct = (question.CorrectAnswer == answer);
 
         if (correct)
         {
@@ -79,7 +86,7 @@ public class GameState : MonoBehaviour
         }
 
         gameUI.LifelinesPanel.HideLifelines();
-        StartCoroutine(ShowAnswerRoutine(IsLastQuestion(), correct, answer, currentQuestion.CorrectAnswer));
+        StartCoroutine(ShowAnswerRoutine(IsLastQuestion(), correct, answer, question.CorrectAnswer));
     }
 
     private IEnumerator ShowAnswerRoutine(bool isLast, bool isCorrect, AnswerType selected, AnswerType correct)
@@ -98,6 +105,9 @@ public class GameState : MonoBehaviour
 
     private void OnLifelineSelected(LifelineType lifeline)
     {
+        if (currentQuestion == null)
+            return;
+
         gameUI.ScorePanel.SetLifelineInteractable(lifeline, false);
         gameUI.LifelinesPanel.ShowLifeline(lifeline, currentQuestion);
     }
