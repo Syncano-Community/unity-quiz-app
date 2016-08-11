@@ -1,7 +1,8 @@
 ﻿using UnityEngine;
+using UnityEngine.SceneManagement;
 using System.Collections;
 
-public class QuestionManagerUI : Singleton<QuestionManagerUI>
+public class QuestionFormUI : Singleton<QuestionFormUI>
 {
     public QuestionPanel QuestionPanel { get; private set; }
     public FoxPanel FoxPanel { get; private set; }
@@ -10,5 +11,10 @@ public class QuestionManagerUI : Singleton<QuestionManagerUI>
     {
         QuestionPanel = transform.GetComponentInChildren<QuestionPanel>(true);
         FoxPanel = transform.GetComponentInChildren<FoxPanel>(true);
+    }
+
+    /* ui event */ public void OnExitClick()
+    {
+        SceneManager.LoadScene(Constant.SCENE_MENU);
     }
 }

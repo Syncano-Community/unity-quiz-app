@@ -40,7 +40,7 @@ public class SubmitPanel : MonoBehaviour
 
 	void Start ()
     {
-        questionPanel = QuestionManagerUI.Instance.QuestionPanel;
+        questionPanel = QuestionFormUI.Instance.QuestionPanel;
         question = new Question();
         SetState(State.EDIT);
 	}

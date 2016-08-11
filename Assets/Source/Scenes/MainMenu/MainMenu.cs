@@ -22,7 +22,7 @@ public class MainMenu : MonoBehaviour
 
     /* ui event */ public void OnAddQuestionClick()
     {
-
+        SceneManager.LoadScene(Constant.SCENE_QUESTION_FORM);
     }
 
     /* ui event */ public void OnModerateClick()
