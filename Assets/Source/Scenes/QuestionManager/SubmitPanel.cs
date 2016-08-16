@@ -38,9 +38,19 @@ public class SubmitPanel : MonoBehaviour
     private Question question;
     private State currentState;
 
+    public void Show()
+    {
+        gameObject.SetActive(true);
+    }
+
+    public void Hide()
+    {
+        gameObject.SetActive(false);
+    }
+
 	void Start ()
     {
-        questionPanel = QuestionFormUI.Instance.QuestionPanel;
+        questionPanel = QuestionManagerUI.Instance.QuestionPanel;
         question = new Question();
         SetState(State.EDIT);
 	}

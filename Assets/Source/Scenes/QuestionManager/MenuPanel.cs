@@ -1,15 +1,40 @@
 ﻿using UnityEngine;
+using UnityEngine.UI;
 using System.Collections;
 
-public class MenuPanel : MonoBehaviour {
+public class MenuPanel : MonoBehaviour
+{
+    [SerializeField]
+    private Button addQuestionButton;
 
-	// Use this for initialization
-	void Start () {
-	
-	}
-	
-	// Update is called once per frame
-	void Update () {
-	
-	}
+    [SerializeField]
+    private Button moderateButton;
+
+    void Start()
+    {
+        addQuestionButton.onClick.AddListener(() => OnAddQuestionClick());
+        moderateButton.onClick.AddListener(() => OnModerateClick());
+    }
+
+    public void Show()
+    {
+        gameObject.SetActive(true);
+    }
+
+    public void Hide()
+    {
+        gameObject.SetActive(false);
+    }
+
+    public void OnAddQuestionClick()
+    {
+        Hide();
+        QuestionManagerUI.Instance.SubmitPanel.Show();
+    }
+
+    public void OnModerateClick()
+    {
+        Hide();
+        QuestionManagerUI.Instance.ModeratePanel.Show();
+    }
 }

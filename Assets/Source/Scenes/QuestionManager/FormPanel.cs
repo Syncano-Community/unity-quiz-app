@@ -7,9 +7,9 @@ public class FormPanel : MonoBehaviour
     [SerializeField]
     private Dropdown difficultyDropdown;
 
-    public void Show(Question question)
+    public void Show(/*Question question*/)
     {
-        difficultyDropdown.value = (int)question.difficultyType;
+        //difficultyDropdown.value = (int)question.difficultyType;
         gameObject.SetActive(true);
     }
 
