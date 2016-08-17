@@ -16,7 +16,7 @@ for (i = 0; i < questions_count; i++) {
       },
       form: {
         text: "Question " + i,
-        isValid: false,
+        isValid: true,
         difficultyType: difficulty_type,
         answers: JSON.stringify(['Correct','Wrong1','Wrong2','Wrong3'])
       }
