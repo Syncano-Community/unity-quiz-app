@@ -27,4 +27,15 @@ public class CommunicationPanel : MonoBehaviour
         questionPanel.FillQuestion(question);
         QuestionManagerUI.Instance.FormPanel.Difficulty = question.difficultyType;
     }
+
+    protected void ClearForm()
+    {
+        QuestionPanel questionPanel = QuestionManagerUI.Instance.QuestionPanel;
+        questionPanel.GetQuestionView().SetText(null);
+        questionPanel.GetAnswerView(AnswerType.A).SetText(null);
+        questionPanel.GetAnswerView(AnswerType.B).SetText(null);
+        questionPanel.GetAnswerView(AnswerType.C).SetText(null);
+        questionPanel.GetAnswerView(AnswerType.D).SetText(null);
+        QuestionManagerUI.Instance.FormPanel.Difficulty = DifficultyType.EASY;
+    }
 }

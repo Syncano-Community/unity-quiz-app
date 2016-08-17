@@ -29,7 +29,7 @@ public class MenuPanel : MonoBehaviour
     public void OnAddQuestionClick()
     {
         Hide();
-        QuestionManagerUI.Instance.SubmitPanel.Show();
+        QuestionManagerUI.Instance.SubmitPanel.StartAddQuestion();
     }
 
     public void OnModerateClick()
