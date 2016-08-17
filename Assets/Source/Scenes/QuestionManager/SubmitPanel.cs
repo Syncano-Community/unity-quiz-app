@@ -3,146 +3,76 @@ using UnityEngine.UI;
 using System.Collections;
 using System.Collections.Generic;
 
-public class SubmitPanel : MonoBehaviour
+public class SubmitPanel : CommunicationPanel
 {
-    private enum State
-    {
-        EDIT,
-        SUBMITTING,
-        SUMMARY_SUCCESS,
-        SUMMARY_ERROR
-    }
-
-    [SerializeField]
-    private GameObject formGameObject;
-
     [SerializeField]
     private Button submitButton;
 
-    [SerializeField]
-    private Dropdown difficultyDropdown;
-
-    [SerializeField]
-    private GameObject loadingImage;
-
-    [SerializeField]
-    private Text summaryText;
-
-    [SerializeField]
-    private Color successColor;
-
-    [SerializeField]
-    private Color errorColor;
-
-    private QuestionPanel questionPanel;
+    private bool isDownloading;
     private Question question;
-    private State currentState;
 
-	void Start ()
+    void Start()
     {
-        questionPanel = QuestionFormUI.Instance.QuestionPanel;
-        question = new Question();
-        SetState(State.EDIT);
-	}
-	
-    /* ui event */ public void OnSubmitClick()
-    {
-        switch (currentState)
-        {
-        case State.EDIT:
-            TrySubmit();
-            break;
-
-        case State.SUMMARY_SUCCESS:
-            ClearForm();
-            SetState(State.EDIT);
-            break;
-
-        case State.SUMMARY_ERROR:
-            SetState(State.EDIT);
-            break;
-        }
+        submitButton.onClick.AddListener(() => OnSubmitClick());
     }
 
-    private void TrySubmit()
+    public void StartAddQuestion()
     {
-        question.text = questionPanel.GetQuestionView().GetText();
-        question.difficultyType = (DifficultyType)difficultyDropdown.value;
+        question = new Question();
+        ShowEditView();
+        QuestionManagerUI.Instance.QuestionPanel.ClearViews();
+        Show();
+    }
 
-        if (question.answers == null)
-            question.answers = new List<string>();
-        else 
-            question.answers.Clear();
+    public void Show()
+    {
+        gameObject.SetActive(true);
+    }
 
-        question.answers.Add(questionPanel.GetAnswerView(AnswerType.A).GetText());
-        question.answers.Add(questionPanel.GetAnswerView(AnswerType.B).GetText());
-        question.answers.Add(questionPanel.GetAnswerView(AnswerType.C).GetText());
-        question.answers.Add(questionPanel.GetAnswerView(AnswerType.D).GetText());
+    public void Hide()
+    {
+        gameObject.SetActive(false);
+    }
+	
+
+    private void OnSubmitClick()
+    {
+        FillQuestion(question);
 
         if (question.IsValid())
         {
-            SubmitQuestion(question);
+            SubmitQuestion();
         }
     }
 
-    private void SetState(State state)
+    public void OnBackClick()
     {
-        currentState = state;
-
-        switch (state)
-        {
-        case State.EDIT:
-            questionPanel.SetEditMode();
-            submitButton.interactable = true;
-            submitButton.GetComponentInChildren<Text>().text = "Submit";
-            loadingImage.gameObject.SetActive(false);
-            formGameObject.SetActive(true);
-            summaryText.gameObject.SetActive(false);
-            break;
-        case State.SUBMITTING:
-            questionPanel.SetPlayMode();
-            submitButton.interactable = false;
-            submitButton.GetComponentInChildren<Text>().text = "Wait...";
-            formGameObject.SetActive(false);
-            loadingImage.gameObject.SetActive(true);
-            summaryText.gameObject.SetActive(false);
-            break;
-        
-        case State.SUMMARY_SUCCESS:
-            questionPanel.SetPlayMode();
-            submitButton.interactable = true;
-            submitButton.GetComponentInChildren<Text>().text = "Add next";
-            formGameObject.SetActive(false);
-            loadingImage.gameObject.SetActive(false);
-            summaryText.gameObject.SetActive(true);
-            summaryText.color = successColor;
-            break;
-
-        case State.SUMMARY_ERROR:
-            questionPanel.SetPlayMode();
-            submitButton.interactable = true;
-            submitButton.GetComponentInChildren<Text>().text = "Edit";
-            formGameObject.SetActive(false);
-            loadingImage.gameObject.SetActive(false);
-            summaryText.gameObject.SetActive(true);
-            summaryText.color = errorColor;
-            break;
-        }
+        Hide();
+        ShowBlockedView();
+        QuestionManagerUI.Instance.QuestionPanel.ClearViews();
+        QuestionManagerUI.Instance.MenuPanel.Show();
     }
 
-    private void ClearForm()
+    private void ShowEditView()
     {
-        questionPanel.GetQuestionView().SetText(null);
-        questionPanel.GetAnswerView(AnswerType.A).SetText(null);
-        questionPanel.GetAnswerView(AnswerType.B).SetText(null);
-        questionPanel.GetAnswerView(AnswerType.C).SetText(null);
-        questionPanel.GetAnswerView(AnswerType.D).SetText(null);
-        difficultyDropdown.value = 0;
+        QuestionManagerUI.Instance.QuestionPanel.SetEditMode();
+        QuestionManagerUI.Instance.FormPanel.Show();
     }
 
-    private void SubmitQuestion(Question question)
+    private void ShowBlockedView()
     {
-        SetState(State.SUBMITTING);
+        QuestionManagerUI.Instance.QuestionPanel.SetPlayMode();
+        QuestionManagerUI.Instance.FormPanel.Hide();
+    }
+
+    private void SubmitQuestion()
+    {
+        if (isDownloading)
+            return;
+
+        isDownloading = true;
+        QuestionManagerUI.Instance.LoadingPanel.Show("Loading question...");
+        ShowBlockedView();
         StartCoroutine(SyncanoMock(OnQuestionSubmitted));
     }
 
@@ -154,17 +84,38 @@ public class SubmitPanel : MonoBehaviour
 
     private void OnQuestionSubmitted(Response response)
     {
-        bool error = true;
+        isDownloading = false;
+        QuestionManagerUI.Instance.LoadingPanel.Hide();
+        Hide();
 
+        bool error = false;
         if (error)
         {
-            summaryText.text = "Error!\nCommunication not implemented.";
-            SetState(State.SUMMARY_ERROR);
+            SummaryPanel summary = QuestionManagerUI.Instance.SummaryPanel;
+            summary.Show("Failed to accept question.");
+            summary.SetErrorColor();
+            summary.SetBackButton("Edit", OnEdit);
+            summary.SetCustomButton("Try again", OnTryAgain);
         }
         else
         {
-            summaryText.text = "Success!\nNew question added.";
-            SetState(State.SUMMARY_SUCCESS);
+            SummaryPanel summary = QuestionManagerUI.Instance.SummaryPanel;
+            summary.Show("Success!\nQuestion accepted.");
+            summary.SetSuccessColor();
+            summary.SetBackButton("Back", OnBackClick);
+            summary.SetCustomButton("Add Next", StartAddQuestion);
         }
+    }
+
+    private void OnTryAgain()
+    {
+        Show();
+        SubmitQuestion();
+    }
+
+    private void OnEdit()
+    {
+        Show();
+        ShowEditView();
     }
 }
