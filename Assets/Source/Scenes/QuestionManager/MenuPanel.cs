@@ -35,6 +35,6 @@ public class MenuPanel : MonoBehaviour
     public void OnModerateClick()
     {
         Hide();
-        QuestionManagerUI.Instance.ModeratePanel.Show();
+        QuestionManagerUI.Instance.ModeratePanel.StartModerate();
     }
 }

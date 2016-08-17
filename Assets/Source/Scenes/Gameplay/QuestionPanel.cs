@@ -30,6 +30,7 @@ public class QuestionPanel : MonoBehaviour
         foreach (var item in answers)
         {
             item.SetPlayMode();
+            item.HiglightOff();
         }
     }
 
@@ -39,6 +40,7 @@ public class QuestionPanel : MonoBehaviour
         foreach (var item in answers)
         {
             item.SetEditMode();
+            item.HiglightOff();
         }
         answers[(int)AnswerType.A].HighlightCorrect();
     } 
@@ -49,7 +51,19 @@ public class QuestionPanel : MonoBehaviour
         foreach (var item in answers)
         {
             item.SetText(null);
-            answers[(int)AnswerType.A].HiglightOff();
+            item.HiglightOff();
+        }
+    }
+
+    public void FillQuestion(Question question)
+    {
+        currentQuestion = question;
+        ClearViews();
+        questionView.SetText(question.text);
+
+        for (int i = 0; i < answers.Length; i++)
+        {
+            answers[i].SetText(question.answers[i]);
         }
     }
 
