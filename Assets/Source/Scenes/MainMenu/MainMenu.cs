@@ -20,7 +20,7 @@ public class MainMenu : MonoBehaviour
         DownloadQuestions();
     }
 
-    /* ui event */ public void OnAddQuestionClick()
+    /* ui event */ public void OnAdministrateClick()
     {
         SceneManager.LoadScene(Constant.SCENE_QUESTION_FORM);
     }

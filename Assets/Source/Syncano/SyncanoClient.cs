@@ -73,6 +73,7 @@ public class SyncanoClient : SelfInstantiatingSingleton<SyncanoClient>
 		response.webError = webRequest.error;
 		response.responseCode = webRequest.responseCode;
 
+        Debug.Log(webRequest.downloadHandler.text);
 		if(webRequest.isError == false)
 		{
 			response.Populate(webRequest.downloadHandler.text);
