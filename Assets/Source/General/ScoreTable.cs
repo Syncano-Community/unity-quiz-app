@@ -3,7 +3,7 @@ using System.Collections;
 
 public class ScoreTable
 {
-    public static readonly ScoreRow zero = new ScoreRow("0", 0, true);
+    public static readonly ScoreRow zero = new ScoreRow("$0", 0, true);
 
     public static readonly ScoreRow[] rows = {
         /* 01 */ new ScoreRow("$100", 100, false),
@@ -48,8 +48,8 @@ public class ScoreTable
 
         for (int i = index; i >= 0; i--)
         {
-            if (rows[index].isGuaranteed)
-                return rows[index];
+            if (rows[i].isGuaranteed)
+                return rows[i];
         }
 
         return zero;
