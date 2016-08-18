@@ -86,13 +86,13 @@ public class ModeratePanel : CommunicationPanel
         StartCoroutine(SyncanoMock(OnQuestionDownloaded));
     }
 
-    private IEnumerator SyncanoMock(System.Action<Response> callback)
+    private IEnumerator SyncanoMock(System.Action<Response<Question>> callback)
     {
         yield return new WaitForSeconds(1.5f);
         callback.Invoke(null);
     }
 
-    private void OnQuestionDownloaded(Response response)
+    private void OnQuestionDownloaded(Response<Question> response)
     {
         isDownloading = false;
         QuestionManagerUI.Instance.LoadingPanel.Hide();
@@ -127,7 +127,7 @@ public class ModeratePanel : CommunicationPanel
         StartCoroutine(SyncanoMock(OnQuestionAccepted));
     }
 
-    private void OnQuestionAccepted(Response response)
+    private void OnQuestionAccepted(Response<Question> response)
     {
         isDownloading = false;
         QuestionManagerUI.Instance.LoadingPanel.Hide();
@@ -163,7 +163,7 @@ public class ModeratePanel : CommunicationPanel
         StartCoroutine(SyncanoMock(OnQuestionRejected));
     }
 
-    private void OnQuestionRejected(Response response)
+    private void OnQuestionRejected(Response<Question> response)
     {
         isDownloading = false;
         QuestionManagerUI.Instance.LoadingPanel.Hide();

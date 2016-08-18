@@ -5,12 +5,12 @@ using System.Collections;
 public class MainMenu : MonoBehaviour
 {
     public GameObject loadingScreen;
-    private SyncanoClient syncano; 
+    private Syncano syncano; 
 
 	void Start ()
     {
         loadingScreen.SetActive(false);
-        syncano = SyncanoClient.Instance;
+        syncano = Syncano.Instance;
 		syncano.Init(Constant.API_KEY, Constant.INSTANCE_NAME);
 	}
 
@@ -42,10 +42,10 @@ public class MainMenu : MonoBehaviour
 
     private void DownloadQuestions()
     {
-        syncano.CallScriptEndpointAsync("d019a1036c7ec1348713de2770385b728f050ed1", "get_questions", OnQuestionsDownloaded);
+        syncano.Please().CallScriptEndpoint("d019a1036c7ec1348713de2770385b728f050ed1", "get_questions", OnQuestionsDownloaded);
     }
 
-    private void OnQuestionsDownloaded(Response response)
+    private void OnQuestionsDownloaded(ScriptEndpoint response)
     {
         if (string.IsNullOrEmpty(response.webError) == false)
         {
@@ -66,7 +66,7 @@ public class MainMenu : MonoBehaviour
         }
     }
 
-    private void HandleError(Response response)
+    private void HandleError(ScriptEndpoint response)
     {
         Debug.Log("Error: " + response.webError);
         HideLoadingScreen();

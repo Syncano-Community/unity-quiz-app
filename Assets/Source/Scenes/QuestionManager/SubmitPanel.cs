@@ -19,6 +19,8 @@ public class SubmitPanel : CommunicationPanel
     public void StartAddQuestion()
     {
         question = new Question();
+        question.isModerated = false;
+
         ShowEditView();
         QuestionManagerUI.Instance.QuestionPanel.ClearViews();
         Show();
@@ -73,22 +75,16 @@ public class SubmitPanel : CommunicationPanel
         isDownloading = true;
         QuestionManagerUI.Instance.LoadingPanel.Show("Loading question...");
         ShowBlockedView();
-        StartCoroutine(SyncanoMock(OnQuestionSubmitted));
+        Syncano.Instance.Please().Save(question, OnQuestionSubmitted);
     }
 
-    private IEnumerator SyncanoMock(System.Action<Response> callback)
-    {
-        yield return new WaitForSeconds(1.5f);
-        callback.Invoke(null);
-    }
-
-    private void OnQuestionSubmitted(Response response)
+    private void OnQuestionSubmitted(Response<Question> response)
     {
         isDownloading = false;
         QuestionManagerUI.Instance.LoadingPanel.Hide();
         Hide();
 
-        bool error = false;
+        bool error = !response.IsSuccess;
         if (error)
         {
             SummaryPanel summary = QuestionManagerUI.Instance.SummaryPanel;

@@ -4,7 +4,7 @@ using System.Collections;
 using System.Collections.Generic;
 
 [Serializable]
-public class Question : JsonData<Question>
+public class Question : SyncanoObject<Question>
 {
     /// <summary>
 	/// Quesion's ID.
@@ -25,6 +25,11 @@ public class Question : JsonData<Question>
     /// Collection of answer strings.
     /// </summary>
 	public List<string> answers;
+
+    /// <summary>
+    /// Determines if new question was moderated.
+    /// </summary>
+    public bool isModerated;
 
     /// <summary>
     /// The index of the correct answer.
