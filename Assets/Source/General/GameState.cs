@@ -43,10 +43,7 @@ public class GameState : MonoBehaviour
     private IEnumerator StartRoutine()
     {
         yield return new WaitForSeconds(1.0f);
-
-        if (Application.platform != RuntimePlatform.OSXEditor && Application.platform != RuntimePlatform.WindowsEditor)
-            yield return StartCoroutine(gameUI.ScorePanel.ShowOff());
-        
+        yield return StartCoroutine(gameUI.ScorePanel.ShowOff());
         yield return StartCoroutine(ShowQuestionRoutine());
     }
 
