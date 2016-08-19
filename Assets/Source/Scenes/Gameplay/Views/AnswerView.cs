@@ -2,6 +2,9 @@
 using UnityEngine.UI;
 using System.Collections;
 
+/// <summary>
+/// Represents answer button.
+/// </summary>
 public class AnswerView : InputFieldView
 {
     [SerializeField]
