@@ -6,11 +6,6 @@ using System.Collections.Generic;
 [Serializable]
 public class Question : SyncanoObject<Question>
 {
-    /// <summary>
-	/// Quesion's ID.
-	/// </summary>
-	public long id;
-
 	/// <summary>
 	/// Quesion's text.
 	/// </summary>
