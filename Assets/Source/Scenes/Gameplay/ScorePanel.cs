@@ -28,6 +28,7 @@ public class ScorePanel : MonoBehaviour
     {
         rows = new ScoreRowView[ScoreTable.GetRowCount()];
 
+        // Create table rows.
         for (int i = ScoreTable.GetRowCount() - 1; i >= 0; i--)
         {
             GameObject go = (GameObject) Instantiate(scoreRowViewPrefab, rowContainer, false);
@@ -36,22 +37,33 @@ public class ScorePanel : MonoBehaviour
             rows[i] = row;
         }
 
+        // Assign on click listeners.
         fiftyFiftyButton.onClick.AddListener(()=> LifelineClicked(LifelineType.FIFTY_FIFTY));
         phoneButton.onClick.AddListener(()=> LifelineClicked(LifelineType.PHONE));
         audienceButton.onClick.AddListener(()=> LifelineClicked(LifelineType.AUDIENCE));
 	}
 
+    /// <summary>
+    /// Sets the on lifeline selected listener.
+    /// Rised when lifeline is clicked.
+    /// </summary>
     public void SetOnLifelineSelectedListener(Action<LifelineType> action)
     {
         onLifelineSelected = action;
     }
 
+    /// <summary>
+    /// Sets the lifeline interactable.
+    /// </summary>
     public void SetLifelineInteractable(LifelineType lifeline, bool interactable)
     {
         Button button = GetLifelineButton(lifeline);
         button.interactable = interactable;
     }
 
+    /// <summary>
+    /// Animation to show score panel elements.
+    /// </summary>
     public IEnumerator ShowOff()
     {
         for (int i = 0; i < ScoreTable.GetRowCount(); i++)
@@ -76,6 +88,9 @@ public class ScorePanel : MonoBehaviour
         SetScale(audienceButton.transform, 1.0f);
     }
 
+    /// <summary>
+    /// Higlights higlights element with given index and all dots below.
+    /// </summary>
     public void SetLevel(int questionIndex)
     {
         for (int i = 0; i < ScoreTable.GetRowCount(); i++)
@@ -85,17 +100,26 @@ public class ScorePanel : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Utility method allowing change transform scale using one variable.
+    /// </summary>
     private void SetScale(Transform transform, float scale)
     {
         transform.localScale = new Vector3(scale, scale, scale);
     }
 
+    /// <summary>
+    /// Rised when lifeline is clicked.
+    /// </summary>
     private void LifelineClicked(LifelineType lifeline)
     {
         if (onLifelineSelected != null)
             onLifelineSelected.Invoke(lifeline);
     }
 
+    /// <summary>
+    /// Gets the lifeline button.
+    /// </summary>
     private Button GetLifelineButton(LifelineType lifeline)
     {
         switch (lifeline) {
