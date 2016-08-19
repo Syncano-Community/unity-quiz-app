@@ -58,10 +58,10 @@ public class HttpClient : SelfInstantiatingSingleton<HttpClient> {
 		yield return www.Send();
 
 		Response<T> response = new Response<T>();
-
-		if(www.isError)
+        response.IsSuccess = !www.isError;
+		
+        if(www.isError)
 		{
-			response.IsSuccess = false;
 			response.webError = www.error;
 			//response.responseCode = GetResponseCode(www); TODO
 

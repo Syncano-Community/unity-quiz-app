@@ -84,22 +84,21 @@ public class SubmitPanel : CommunicationPanel
         QuestionManagerUI.Instance.LoadingPanel.Hide();
         Hide();
 
-        bool error = !response.IsSuccess;
-        if (error)
-        {
-            SummaryPanel summary = QuestionManagerUI.Instance.SummaryPanel;
-            summary.Show("Failed to accept question.");
-            summary.SetErrorColor();
-            summary.SetBackButton("Edit", OnEdit);
-            summary.SetCustomButton("Try again", OnTryAgain);
-        }
-        else
+        if (response.IsSuccess)
         {
             SummaryPanel summary = QuestionManagerUI.Instance.SummaryPanel;
             summary.Show("Success!\nQuestion accepted.");
             summary.SetSuccessColor();
             summary.SetBackButton("Back", OnBackClick);
             summary.SetCustomButton("Add Next", StartAddQuestion);
+        }
+        else
+        {
+            SummaryPanel summary = QuestionManagerUI.Instance.SummaryPanel;
+            summary.Show("Failed to accept question.\n" + response.webError);
+            summary.SetErrorColor();
+            summary.SetBackButton("Edit", OnEdit);
+            summary.SetCustomButton("Try again", OnTryAgain);
         }
     }
 

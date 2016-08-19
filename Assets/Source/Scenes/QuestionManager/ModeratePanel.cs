@@ -83,16 +83,10 @@ public class ModeratePanel : CommunicationPanel
 
         isDownloading = true;
         QuestionManagerUI.Instance.LoadingPanel.Show("Loading question...");
-        StartCoroutine(SyncanoMock(OnQuestionDownloaded));
+        Syncano.Instance.Please().CallScriptEndpoint("6349c3ec1208c0be5ade53b154427d4eb5cb1628", "get_question_to_moderate", OnQuestionDownloaded);
     }
 
-    private IEnumerator SyncanoMock(System.Action<Response<Question>> callback)
-    {
-        yield return new WaitForSeconds(1.5f);
-        callback.Invoke(null);
-    }
-
-    private void OnQuestionDownloaded(Response<Question> response)
+    private void OnQuestionDownloaded(ScriptEndpoint endpoint)
     {
         isDownloading = false;
         QuestionManagerUI.Instance.LoadingPanel.Hide();
@@ -109,7 +103,8 @@ public class ModeratePanel : CommunicationPanel
         }
         else
         {
-            question = new Question(); // Downloaded question mock.
+            question = Question.FromJson(endpoint.stdout);
+            FillForm(question);
             ShowEditView();
         }
 
@@ -124,7 +119,8 @@ public class ModeratePanel : CommunicationPanel
         isDownloading = true;
         QuestionManagerUI.Instance.LoadingPanel.Show("Updating question...");
         ShowBlockedView();
-        StartCoroutine(SyncanoMock(OnQuestionAccepted));
+        question.isModerated = true; // Accept question.
+        Syncano.Instance.Please().Save(question, OnQuestionAccepted);
     }
 
     private void OnQuestionAccepted(Response<Question> response)
@@ -133,22 +129,21 @@ public class ModeratePanel : CommunicationPanel
         QuestionManagerUI.Instance.LoadingPanel.Hide();
         Hide();
 
-        bool error = false;
-        if (error)
-        {
-            SummaryPanel summary = QuestionManagerUI.Instance.SummaryPanel;
-            summary.Show("Failed to accept question.");
-            summary.SetErrorColor();
-            summary.SetBackButton("Edit", OnEdit);
-            summary.SetCustomButton("Try again", OnTryAcceptAgain);
-        }
-        else
+        if (response.IsSuccess)
         {
             SummaryPanel summary = QuestionManagerUI.Instance.SummaryPanel;
             summary.Show("Success!\nQuestion accepted.");
             summary.SetSuccessColor();
             summary.SetBackButton("Back", OnBackClick);
             summary.SetCustomButton("Next", StartModerate);
+        }
+        else
+        {
+            SummaryPanel summary = QuestionManagerUI.Instance.SummaryPanel;
+            summary.Show("Failed to accept question.\n" + response.webError);
+            summary.SetErrorColor();
+            summary.SetBackButton("Edit", OnEdit);
+            summary.SetCustomButton("Try again", OnTryAcceptAgain);
         }
     }
 
@@ -160,7 +155,7 @@ public class ModeratePanel : CommunicationPanel
         isDownloading = true;
         QuestionManagerUI.Instance.LoadingPanel.Show("Deleting question...");
         ShowBlockedView();
-        StartCoroutine(SyncanoMock(OnQuestionRejected));
+        Syncano.Instance.Please().Delete(question, OnQuestionRejected);
     }
 
     private void OnQuestionRejected(Response<Question> response)
@@ -169,22 +164,21 @@ public class ModeratePanel : CommunicationPanel
         QuestionManagerUI.Instance.LoadingPanel.Hide();
         Hide();
 
-        bool error = true;
-        if (error)
-        {
-            SummaryPanel summary = QuestionManagerUI.Instance.SummaryPanel;
-            summary.Show("Failed to delete question.");
-            summary.SetErrorColor();
-            summary.SetBackButton("Edit", OnEdit);
-            summary.SetCustomButton("Try again", OnTryRejectAgain);
-        }
-        else
+        if (response.IsSuccess)
         {
             SummaryPanel summary = QuestionManagerUI.Instance.SummaryPanel;
             summary.Show("Success!\nQuestion deleted.");
             summary.SetSuccessColor();
             summary.SetBackButton("Back", OnBackClick);
             summary.SetCustomButton("Next", StartModerate);
+        }
+        else
+        {
+            SummaryPanel summary = QuestionManagerUI.Instance.SummaryPanel;
+            summary.Show("Failed to delete question.\n" + response.webError);
+            summary.SetErrorColor();
+            summary.SetBackButton("Edit", OnEdit);
+            summary.SetCustomButton("Try again", OnTryRejectAgain);
         }
     }
 
