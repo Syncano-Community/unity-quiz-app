@@ -5,8 +5,8 @@ using System.Collections.Generic;
 
 public class RequestBuilder {
 	
-	public Coroutine Get<T>(Action<Response<T>> onSuccess, Action<Response<T>> onFailure = null) where T : SyncanoObject<T>, new() {
-		return HttpClient.Instance.PostAsync<T>(default(T), onSuccess, onFailure, UnityEngine.Networking.UnityWebRequest.kHttpVerbGET);
+	public Coroutine Get<T>(long id, Action<Response<T>> onSuccess, Action<Response<T>> onFailure = null) where T : SyncanoObject<T>, new() {
+		return HttpClient.Instance.PostAsync<T>(id, onSuccess, onFailure, UnityEngine.Networking.UnityWebRequest.kHttpVerbGET);
 	}
 
 	public Coroutine Save<T>(T obj, Action<Response<T>> onSuccess, Action<Response<T>> onFailure = null) where T :SyncanoObject<T>, new()  {
