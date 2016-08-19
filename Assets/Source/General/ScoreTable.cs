@@ -1,10 +1,19 @@
 ﻿using UnityEngine;
 using System.Collections;
 
+/// <summary>
+/// Represents table of scores. It's used to find player reward and to create dynamic score table in UI.
+/// </summary>
 public class ScoreTable
 {
+    /// <summary>
+    /// The zero reward.
+    /// </summary>
     public static readonly ScoreRow zero = new ScoreRow("$0", 0, true);
 
+    /// <summary>
+    /// The reward rows.
+    /// </summary>
     public static readonly ScoreRow[] rows = {
         /* 01 */ new ScoreRow("$100", 100, false),
         /* 02 */ new ScoreRow("$200", 200, false),
@@ -23,11 +32,17 @@ public class ScoreTable
         /* 15 */ new ScoreRow("$1 MILION", 1000000, true),
     };
 
+    /// <summary>
+    /// Gets the reward row.
+    /// </summary>
     public static ScoreRow GetRow(int index)
     {
         return rows[index];
     }
 
+    /// <summary>
+    /// Gets the reward row count.
+    /// </summary>
     public static int GetRowCount()
     {
         return rows.Length;

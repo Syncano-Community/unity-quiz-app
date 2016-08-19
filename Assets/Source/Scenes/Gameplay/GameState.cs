@@ -35,6 +35,9 @@ public class GameState : MonoBehaviour
     private GameUI gameUI;
     #endregion Views
 
+    /// <summary>
+    /// Start this MonoBehaviour.
+    /// </summary>
     void Start ()
     {
         if (Setup.GetQuiz().IsValid())
@@ -48,11 +51,17 @@ public class GameState : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Raises the exit click event.
+    /// </summary>
     /* ui event */ public void OnExitClick()
     {
         FinishGame(true);
     }
 
+    /// <summary>
+    /// Init the GameState for given quiz.
+    /// </summary>
     public void Init(Quiz quiz)
     {
         this.quiz = quiz;
@@ -61,22 +70,30 @@ public class GameState : MonoBehaviour
         this.currentQuestion = null;
 
         gameUI = GameUI.Instance;
-
         gameUI.QuestionPanel.SetOnAnswerSelectedListener(OnAnswerSelected);
         gameUI.ScorePanel.SetOnLifelineSelectedListener(OnLifelineSelected);
     }
 
+    /// <summary>
+    /// Run game start routine.
+    /// </summary>
     public void StartGame()
     {
         StartCoroutine(StartRoutine());
     }
 
+    /// <summary>
+    /// Finishs the game.
+    /// </summary>
     public void FinishGame(bool giveUp)
     {
         ScoreRow score = ScoreTable.GetScoreForIndex(lastCorrectAnswerIndex, giveUp);
         gameUI.ResultPanel.ShowReward(score);
     }
 
+    /// <summary>
+    /// Routine for game start.
+    /// </summary>
     private IEnumerator StartRoutine()
     {
         yield return new WaitForSeconds(1.0f);
@@ -84,21 +101,30 @@ public class GameState : MonoBehaviour
         yield return StartCoroutine(ShowQuestionRoutine());
     }
 
+    /// <summary>
+    /// Switchs to next question and start change routine.
+    /// </summary>
     private void SwitchToNextQuestion()
     {
         questionIndex += 1;
         StartCoroutine(ShowQuestionRoutine());
     }
 
+    /// <summary>
+    /// Routine for showing question using questionIndex.
+    /// </summary>
     private IEnumerator ShowQuestionRoutine()
     {
         gameUI.ScorePanel.SetLevel(questionIndex);
         Question newQuestion = quiz.GetQuestion(questionIndex);
-        newQuestion.Shuffle();
+        newQuestion.Shuffle(); // Change answer order.
         yield return StartCoroutine(gameUI.QuestionPanel.ShowQuestion(newQuestion));
-        currentQuestion = newQuestion;
+        currentQuestion = newQuestion; // Set current question - it will allow interactions.
     }
 
+    /// <summary>
+    /// Callback for answer select.
+    /// </summary>
     public void OnAnswerSelected(AnswerType answer)
     {
         if (currentQuestion == null)
@@ -123,6 +149,9 @@ public class GameState : MonoBehaviour
         StartCoroutine(ShowAnswerRoutine(IsLastQuestion(), correct, answer, question.CorrectAnswer));
     }
 
+    /// <summary>
+    /// Routine for showing blinking answer and finish game or show next question.
+    /// </summary>
     private IEnumerator ShowAnswerRoutine(bool isLast, bool isCorrect, AnswerType selected, AnswerType correct)
     {
         yield return StartCoroutine(gameUI.QuestionPanel.ShowAnswer(selected, correct));
@@ -137,6 +166,9 @@ public class GameState : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Callback for lifeline selected.
+    /// </summary>
     private void OnLifelineSelected(LifelineType lifeline)
     {
         if (currentQuestion == null)
@@ -146,6 +178,9 @@ public class GameState : MonoBehaviour
         gameUI.LifelinesPanel.ShowLifeline(lifeline, currentQuestion);
     }
 
+    /// <summary>
+    /// True if current question is last one.
+    /// </summary>
     private bool IsLastQuestion()
     {
         return questionIndex == quiz.GetQuestionCount() - 1;
