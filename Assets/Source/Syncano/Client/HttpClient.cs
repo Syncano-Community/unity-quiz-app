@@ -9,59 +9,47 @@ using UnityEngine.Networking;
 
 public class HttpClient : SelfInstantiatingSingleton<HttpClient> {
 
-	/// <summary>
-	/// The base URL variable.
-	/// </summary>
-	private string baseUrl;
-
-	public Coroutine GetAsync<T>(long id, Action<Response<T>> onSuccess, Action<Response<T>> onFailure = null) where T :SyncanoObject<T>, new() {
-
-		return StartCoroutine(SendGetOneRequest(id, onSuccess, onFailure));
-	}
-
 	public Coroutine PostAsync<T>(T obj,  Action<Response<T>> onSuccess, Action<Response<T>> onFailure = null, string httpMethodOverride = null) where T :SyncanoObject<T> , new() {
-
-		return StartCoroutine(SendPostRequest<T>(obj, onSuccess, onFailure, httpMethodOverride));
-	}
-
-	private IEnumerator SendPostRequest<T>(T obj,  Action<Response<T>> onSuccess, Action<Response<T>> onFailure = null, string httpMethodOverride = null) where T :SyncanoObject<T>, new() {
-
-		UTF8Encoding encoding = new System.Text.UTF8Encoding();
 
 		string serializedObject = obj != null ? obj.ToJson() : string.Empty;
 		string id =  (obj != null && obj.id != 0) ? obj.id.ToString() : string.Empty;
 		string url = UrlBuilder(id.ToString(), typeof(T));
 
+		return StartCoroutine(SendRequest(url, serializedObject, onSuccess, onFailure, httpMethodOverride));
+	}
+		
+	private Coroutine SendPostRequest<T>(int id,  Action<Response<T>> onSuccess, Action<Response<T>> onFailure = null, string httpMethodOverride = null) where T :SyncanoObject<T>, new() {
+		
+		string url = UrlBuilder(id.ToString(), typeof(T));
+
+		return StartCoroutine(SendRequest(url, string.Empty, onSuccess, onFailure, httpMethodOverride));
+	}
+
+	private IEnumerator SendRequest<T>(string url, string serializedObject, Action<Response<T>> onSuccess, Action<Response<T>> onFailure = null, string httpMethodOverride = null) where T :SyncanoObject<T>, new() {
+
 		UnityWebRequest www = new UnityWebRequest(url);
 		www.SetRequestHeader(Constants.HTTP_HEADER_API_KEY, Syncano.Instance.ApiKey);
 		www.SetRequestHeader("Content-Type", "application/json");
+		UTF8Encoding encoding = new System.Text.UTF8Encoding();
 
 		www.downloadHandler = new DownloadHandlerBuffer();
-	
-		if(string.IsNullOrEmpty(httpMethodOverride) == false)
-		{
-			if(httpMethodOverride.Equals(UnityWebRequest.kHttpVerbDELETE))
-			{
-				www.method = httpMethodOverride;
-			}
-		}
 
-		else
+		www.method = string.IsNullOrEmpty(httpMethodOverride) ? UnityWebRequest.kHttpVerbPOST : httpMethodOverride;
+
+		if(string.IsNullOrEmpty(serializedObject) == false)
 		{
-			if(string.IsNullOrEmpty(serializedObject) == false)
-			{
-				www.uploadHandler = new UploadHandlerRaw (encoding.GetBytes(serializedObject));
-			}
-			www.method = UnityWebRequest.kHttpVerbPOST;
+			www.uploadHandler = new UploadHandlerRaw (encoding.GetBytes(serializedObject));
 		}
 
 		yield return www.Send();
 
 		Response<T> response = new Response<T>();
-		response.IsSuccess = !www.isError;
+		Debug.Log(www.downloadHandler.text);
+
 
 		if(www.isError)
 		{
+			response.IsSuccess = false;
 			response.webError = www.error;
 			//response.responseCode = GetResponseCode(www); TODO
 
@@ -79,42 +67,8 @@ public class HttpClient : SelfInstantiatingSingleton<HttpClient> {
 				onSuccess(response);
 			}
 		}
+
 	}
-
-	private IEnumerator SendGetOneRequest<T>(long id, Action<Response<T>> onSuccess, Action<Response<T>> onFailure = null) where T :SyncanoObject<T>, new() {
-
-		string url = UrlBuilder(id.ToString(), typeof(T));
-
-		Dictionary<string, string> headers = new Dictionary<string, string>();
-		headers.Add(Constants.HTTP_HEADER_API_KEY, Syncano.Instance.ApiKey);
-
-		WWW www = new WWW(url, new byte[]{0}, headers);
-		yield return www;
-
-		Response<T> response = new Response<T>();
-		response.Data = Response<T>.FromJson(www.text);
-
-		if (string.IsNullOrEmpty (www.error) == false)
-		{
-			response.IsSuccess = false;
-			response.webError = www.error;
-			response.responseCode = GetResponseCode(www);
-
-			if (onFailure != null)
-			{
-				onFailure(response);
-			}
-		}
-
-		else
-		{
-			if (onSuccess != null)
-			{
-				onSuccess(response);
-			}
-		}
-	}
-
 
 	public Coroutine CallScriptEndpoint (string endpointId, string scriptName, System.Action<ScriptEndpoint> callback) { //where T : List<SyncanoObject<T>>, new() {
 		return StartCoroutine(CallScriptEndpoint(endpointId, scriptName, callback, ""));

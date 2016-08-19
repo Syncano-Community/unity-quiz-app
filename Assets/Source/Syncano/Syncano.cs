@@ -28,11 +28,13 @@ public class Syncano : SelfInstantiatingSingleton<Syncano> {
 	/// </summary>
 	/// <param name="apiKey">API key.</param>
 	/// <param name="instanceName">Instance name.</param>
-	public void Init(string apiKey, string instanceName)
+	public Syncano Init(string apiKey, string instanceName)
 	{
 		isInitialized = true;
 		InstanceName = instanceName;
 		ApiKey = apiKey;
+
+		return this;
 	}
 
 	public RequestBuilder Please()
