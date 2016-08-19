@@ -29,7 +29,7 @@ public class HttpClient : SelfInstantiatingSingleton<HttpClient> {
 		UTF8Encoding encoding = new System.Text.UTF8Encoding();
 
 		string serializedObject = obj != null ? obj.ToJson() : string.Empty;
-		string id =  (obj != null) ? obj.id.ToString() : string.Empty;
+		string id =  (obj != null && obj.id != 0) ? obj.id.ToString() : string.Empty;
 		string url = UrlBuilder(id.ToString(), typeof(T));
 
 		UnityWebRequest www = new UnityWebRequest(url);
@@ -58,9 +58,9 @@ public class HttpClient : SelfInstantiatingSingleton<HttpClient> {
 		yield return www.Send();
 
 		Response<T> response = new Response<T>();
-        response.IsSuccess = !www.isError;
-		
-        if(www.isError)
+		response.IsSuccess = !www.isError;
+
+		if(www.isError)
 		{
 			response.webError = www.error;
 			//response.responseCode = GetResponseCode(www); TODO
@@ -120,7 +120,7 @@ public class HttpClient : SelfInstantiatingSingleton<HttpClient> {
 		return StartCoroutine(CallScriptEndpoint(endpointId, scriptName, callback, ""));
 	}
 
-	private  IEnumerator CallScriptEndpoint (string endpointId, string scriptName, System.Action<ScriptEndpoint> callback, string optionalParameters) { //where T : List<SyncanoObject<T>>, new() {
+	private IEnumerator CallScriptEndpoint (string endpointId, string scriptName, System.Action<ScriptEndpoint> callback, string optionalParameters) { //where T : List<SyncanoObject<T>>, new() {
 
 		StringBuilder sb = new StringBuilder(string.Format("https://api.syncano.io/v1.1/instances/{0}/", Syncano.Instance.InstanceName)); // TODO
 
