@@ -91,24 +91,36 @@ public class ModeratePanel : CommunicationPanel
         isDownloading = false;
         QuestionManagerUI.Instance.LoadingPanel.Hide();
 
-        bool error = false;
-        if (error)
+        if (string.IsNullOrEmpty(endpoint.webError))
         {
-            Hide();
-            SummaryPanel summary = QuestionManagerUI.Instance.SummaryPanel;
-            summary.Show("Failed to download question.");
-            summary.SetErrorColor();
-            summary.SetBackButton("Back", OnBackClick);
-            summary.SetCustomButton("Try again", OnTryDownloadAgain);
+            if (string.IsNullOrEmpty(endpoint.stdout) || "undefined".Equals(endpoint.stdout))
+            {
+                ShowDownloadFailSummary("No questions to moderate.");
+                return;
+            }
+            else
+            {
+                question = Question.FromJson(endpoint.stdout);
+                FillForm(question);
+                ShowEditView();
+                return;
+            }
         }
         else
         {
-            question = Question.FromJson(endpoint.stdout);
-            FillForm(question);
-            ShowEditView();
+            ShowDownloadFailSummary("Failed to download question.\n" + endpoint.webError);
+            return;
         }
+    }
 
-        isDownloading = false;
+    private void ShowDownloadFailSummary(string failMessage)
+    {
+        Hide();
+        SummaryPanel summary = QuestionManagerUI.Instance.SummaryPanel;
+        summary.Show(failMessage);
+        summary.SetErrorColor();
+        summary.SetBackButton("Back", OnBackClick);
+        summary.SetCustomButton("Try again", OnTryDownloadAgain);
     }
 
     private void AcceptQuestion()
