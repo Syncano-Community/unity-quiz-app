@@ -1,6 +1,9 @@
 ﻿using UnityEngine;
 using System.Collections;
 
+/// <summary>
+/// Quiz represents group of questions.
+/// </summary>
 public class Quiz
 {
     public const int QUESTION_COUNT = 15;
@@ -10,6 +13,9 @@ public class Quiz
     /// </summary>
     public Question[] questions = new Question[QUESTION_COUNT];
 
+    /// <summary>
+    /// Gets the question by index.
+    /// </summary>
     public Question GetQuestion(int index)
     {
         if (questions != null && index >= 0 && index < questions.Length)
@@ -18,6 +24,9 @@ public class Quiz
         return null;
     }
 
+    /// <summary>
+    /// Sets the question for given index.
+    /// </summary>
     public void SetQuestion(int index, Question question)
     {
         if (index >= 0 && index < QUESTION_COUNT)
@@ -30,6 +39,9 @@ public class Quiz
         }
     }
 
+    /// <summary>
+    /// Gets the question count.
+    /// </summary>
     public int GetQuestionCount()
     {
         if (questions == null)
@@ -38,6 +50,9 @@ public class Quiz
         return questions.Length;
     }
 
+    /// <summary>
+    /// Determines whether this quiz and all its questions are valid.
+    /// </summary>
     public bool IsValid()
     {
         if (questions == null || questions.Length != QUESTION_COUNT)

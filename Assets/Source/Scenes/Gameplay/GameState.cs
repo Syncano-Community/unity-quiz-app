@@ -4,17 +4,54 @@ using System.Collections.Generic;
 
 public class GameState : MonoBehaviour
 {
+    /// <summary>
+    /// Current Quiz.
+    /// </summary>
     private Quiz quiz;
 
     #region Current question
+
+    /// <summary>
+    /// Current question index.
+    /// </summary>
     private int questionIndex;
+
+    /// <summary>
+    /// Index of the last player correct answer.
+    /// Used to find reward.
+    /// </summary>
     private int lastCorrectAnswerIndex;
+
+    /// <summary>
+    /// The current question.
+    /// </summary>
     private Question currentQuestion; 
     #endregion Current question
 
     #region Views
+    /// <summary>
+    /// Place where we can access game UI.
+    /// </summary>
     private GameUI gameUI;
     #endregion Views
+
+    void Start ()
+    {
+        if (Setup.GetQuiz().IsValid())
+        {
+            Init(Setup.GetQuiz());
+            StartGame();
+        }
+        else
+        {
+            Debug.Log("Unable to start. Quiz is not valid.");
+        }
+    }
+
+    /* ui event */ public void OnExitClick()
+    {
+        FinishGame(true);
+    }
 
     public void Init(Quiz quiz)
     {
