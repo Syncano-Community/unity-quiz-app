@@ -54,6 +54,7 @@ public class ResultPanel : MonoBehaviour
 
     /* ui event */ public void OnShareClick()
     {
+        Debug.Log("Your reward is: " + reward.label + " (Raw value: " + reward.value + ")");
         // Share your "salary" on FB.
     }
 

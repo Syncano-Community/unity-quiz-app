@@ -29,7 +29,7 @@ public class ScoreTable
         /* 12 */ new ScoreRow("$125,000", 125000, false),
         /* 13 */ new ScoreRow("$250,000", 250000, false),
         /* 14 */ new ScoreRow("$500,000", 500000, false),
-        /* 15 */ new ScoreRow("$1 MILION", 1000000, true),
+        /* 15 */ new ScoreRow("$1 MILLION", 1000000, true),
     };
 
     /// <summary>
