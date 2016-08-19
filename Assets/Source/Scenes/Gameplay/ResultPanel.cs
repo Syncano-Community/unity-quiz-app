@@ -23,6 +23,9 @@ public class ResultPanel : MonoBehaviour
     [SerializeField]
     private Sprite millionRewardImage;
 
+    [SerializeField]
+    private GameObject loadingScreen;
+
     private ScoreRow reward;
 
     public void ShowReward(ScoreRow reward)
@@ -61,5 +64,46 @@ public class ResultPanel : MonoBehaviour
     /* ui event */ public void OnMenuClick()
     {
     	SceneManager.LoadScene(Constant.SCENE_MENU);
+    }
+
+    /* ui event */ public void OnTryAgainClick()
+    {
+        DownloadQuestions();
+    }
+
+    private void ShowLoadingScreen()
+    {
+        loadingScreen.SetActive(true);
+    }
+
+    private void HideLoadingScreen()
+    {
+        loadingScreen.SetActive(false);
+    }
+
+    private void DownloadQuestions()
+    {
+        ShowLoadingScreen();
+        Syncano.Instance.Please().CallScriptEndpoint("d019a1036c7ec1348713de2770385b728f050ed1", "get_questions", OnQuestionsDownloaded);
+    }
+
+    private void OnQuestionsDownloaded(ScriptEndpoint response)
+    {
+        HideLoadingScreen();
+
+        if (response != null && response.result != null && string.IsNullOrEmpty(response.webError))
+        {
+            Quiz quiz = Quiz.FromJson(response.stdout);
+            if (quiz.IsValid())
+            {
+                StartGame(quiz);
+            }
+        }
+    }
+
+    private void StartGame(Quiz quiz)
+    {
+        Setup.SetQuiz(quiz);
+        SceneManager.LoadScene(Constant.SCENE_GAMEPLAY);
     }
 }

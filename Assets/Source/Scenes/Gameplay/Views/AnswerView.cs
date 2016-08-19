@@ -16,13 +16,8 @@ public class AnswerView : InputFieldView
     [SerializeField]
     private Sprite incorrect;
 
+    [SerializeField]
     private Button button;
-
-    protected override void Awake ()
-    {
-        base.Awake ();
-        button = GetComponent<Button>();
-    }
 
     public Button.ButtonClickedEvent onClick
     {

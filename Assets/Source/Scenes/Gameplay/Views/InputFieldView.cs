@@ -7,14 +7,11 @@ using System.Collections;
 /// </summary>
 public class InputFieldView : MonoBehaviour
 {
+    [SerializeField]
     private InputField inputField;
-    private Image inputFieldBackgroud;
 
-	protected virtual void Awake ()
-    {
-        inputField = GetComponentInChildren<InputField>();
-        inputFieldBackgroud = inputField.GetComponent<Image>();
-	}
+    [SerializeField]
+    private Image inputFieldBackgroud;
 
     /// <summary>
     /// In play mode we just display text.

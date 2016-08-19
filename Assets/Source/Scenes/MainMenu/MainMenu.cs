@@ -4,7 +4,8 @@ using System.Collections;
 
 public class MainMenu : MonoBehaviour
 {
-    public GameObject loadingScreen;
+    [SerializeField]
+    private GameObject loadingScreen;
     private Syncano syncano; 
 
 	void Start ()
