@@ -29,7 +29,7 @@ public class HttpClient : SelfInstantiatingSingleton<HttpClient> {
 		UTF8Encoding encoding = new System.Text.UTF8Encoding();
 
 		string serializedObject = obj != null ? obj.ToJson() : string.Empty;
-		string id =  (obj != null && obj.id.HasValue) ? obj.id.Value.ToString() : string.Empty;
+		string id =  (obj != null) ? obj.id.ToString() : string.Empty;
 		string url = UrlBuilder(id.ToString(), typeof(T));
 
 		UnityWebRequest www = new UnityWebRequest(url);

@@ -15,6 +15,6 @@ public class SyncanoObject<T> : JsonData<T> {
 	/// <summary>
 	/// The identifier of this object from Syncano.
 	/// </summary>
-	public long? id;
+	public long id;
 
 }
