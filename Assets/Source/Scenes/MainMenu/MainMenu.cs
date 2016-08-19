@@ -53,7 +53,6 @@ public class MainMenu : MonoBehaviour
         }
         else
         {
-            Debug.Log("response: " + response.stderr);
             Quiz quiz = Quiz.FromJson(response.stdout);
             if (quiz.IsValid())
             {
