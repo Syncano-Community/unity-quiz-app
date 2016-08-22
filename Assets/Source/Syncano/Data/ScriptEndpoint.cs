@@ -1,33 +1,12 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class ScriptEndpoint : JsonData<ScriptEndpoint> {
-	/// <summary>
-	/// The response status. Returns success or fail string.
-	/// </summary>
-	public string status;
-
-	/// <summary>
-	/// The duration of processing request.
-	/// </summary>
-	public int duration;
-
+public class ScriptEndpoint : SyncanoWebRequest {
+	
 	/// <summary>
 	/// The serialized result.
 	/// </summary>
 	public Result result;
-
-	/// <summary>
-	/// The web response code.
-	/// </summary>
-	[System.NonSerialized]
-	public long responseCode;
-
-	/// <summary>
-	/// The web error.
-	/// </summary>
-	[System.NonSerialized]
-	public string webError;
 
 	/// <summary>
 	/// Shortcut for error message.

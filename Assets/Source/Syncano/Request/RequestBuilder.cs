@@ -17,7 +17,7 @@ public class RequestBuilder {
 		return HttpClient.Instance.PostAsync<T>(obj, onSuccess, onFailure, UnityEngine.Networking.UnityWebRequest.kHttpVerbDELETE);
 	}
 
-	public Coroutine CallScriptEndpoint(string endpointId, string scriptName, System.Action<ScriptEndpoint> callback){ // where T : List<SyncanoObject<T>>, new() {
+	public Coroutine CallScriptEndpoint(string endpointId, string scriptName, System.Action<ScriptEndpoint> callback) {
 		return HttpClient.Instance.CallScriptEndpoint(endpointId, scriptName, callback);
 	}
 }
