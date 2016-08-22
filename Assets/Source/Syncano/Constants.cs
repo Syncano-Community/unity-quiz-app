@@ -2,7 +2,10 @@
 using System.Collections;
 
 namespace Syncano {
-public class Constants : MonoBehaviour {
+/// <summary>
+/// Constants class containing mostly strings for URLs.
+/// </summary>
+public class Constants {
 
 	/// <summary>
 	/// Server URL

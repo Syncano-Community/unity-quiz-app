@@ -1,6 +1,9 @@
 ﻿using UnityEngine;
 using System.Collections;
 
+/// <summary>
+/// Wrapper for a default Unity JSON serializer, deserializer.
+/// </summary>
 namespace Syncano.Data {
 [System.Serializable]
 public class JsonData<T>

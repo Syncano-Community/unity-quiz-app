@@ -3,6 +3,9 @@ using System.Collections;
 using Syncano.Request;
 
 namespace Syncano.Data {
+/// <summary>
+/// Class representing ScriptEndpoint structure.
+/// </summary>
 public class ScriptEndpoint : SyncanoWebRequest {
 	
 	/// <summary>

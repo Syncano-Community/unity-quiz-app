@@ -6,6 +6,9 @@ using System;
 using Syncano.Data;
 
 namespace Syncano {
+/// <summary>
+/// Class representing basic data structure for all DataObjects returned from Syncano. Every class must override it, otherwise it won't deserialize properly.
+/// </summary>
 public class SyncanoObject<T> : JsonData<T> {
 
 	/// <summary>

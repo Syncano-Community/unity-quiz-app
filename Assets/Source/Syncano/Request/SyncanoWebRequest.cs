@@ -2,6 +2,9 @@
 using System.Collections;
 
 namespace Syncano.Request {
+/// <summary>
+/// This is a base class for all classes that send requests to Syncano. All these fields contain information about status of a request, error if any etc.
+/// </summary>
 public class SyncanoWebRequest {
 
 	/// <summary>
