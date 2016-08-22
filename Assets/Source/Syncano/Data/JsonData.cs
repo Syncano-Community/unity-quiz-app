@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 
+namespace Syncano.Data {
 [System.Serializable]
 public class JsonData<T>
 {
@@ -22,4 +23,5 @@ public class JsonData<T>
 	{
 		JsonUtility.FromJsonOverwrite(json, this);
 	}
+}
 }

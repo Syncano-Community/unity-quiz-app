@@ -2,6 +2,11 @@
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 using System.Collections;
+using System.Collections.Generic;
+using Facebook.Unity;
+using System;
+using Syncano;
+using Syncano.Data;
 
 public class ResultPanel : MonoBehaviour
 {
@@ -27,6 +32,27 @@ public class ResultPanel : MonoBehaviour
     private GameObject loadingScreen;
 
     private ScoreRow reward;
+
+	void Awake()
+	{
+		if (!FB.IsInitialized) {
+			// Initialize the Facebook SDK
+			FB.Init(InitCallback);
+		} else {
+			// Already initialized, signal an app activation App Event
+			FB.ActivateApp();
+		}
+	}
+
+	private void InitCallback ()
+	{
+		if (FB.IsInitialized) {
+			
+			FB.ActivateApp();
+		} else {
+			Debug.Log("Failed to Initialize the Facebook SDK");
+		}
+	}
 
     public void ShowReward(ScoreRow reward)
     {
@@ -58,8 +84,22 @@ public class ResultPanel : MonoBehaviour
     /* ui event */ public void OnShareClick()
     {
         Debug.Log("Your reward is: " + reward.label + " (Raw value: " + reward.value + ")");
-        // Share your "salary" on FB.
+
+		var perms = new List<string>(){"publish_actions"};
+		FB.LogInWithPublishPermissions (perms, AuthCallback);	
     }
+
+	private void ShareCallback (IShareResult result) {
+		if (result.Cancelled || !string.IsNullOrEmpty(result.Error)) {
+			Debug.Log("ShareLink Error: "+result.Error);
+		} else if (!string.IsNullOrEmpty(result.PostId)) {
+			// Print post identifier of the shared content
+			Debug.Log(result.PostId);
+		} else {
+			// Share succeeded without postID
+			Debug.Log("ShareLink success!");
+		}
+	}
 
     /* ui event */ public void OnMenuClick()
     {
@@ -70,6 +110,26 @@ public class ResultPanel : MonoBehaviour
     {
         DownloadQuestions();
     }
+
+	private void AuthCallback(ILoginResult result)
+	{
+		if (FB.IsLoggedIn)
+		{
+			// AccessToken class will have session details
+			var aToken = Facebook.Unity.AccessToken.CurrentAccessToken;
+			// Print current access token's User ID
+			Debug.Log(aToken.UserId);
+			// Print current access token's granted permissions
+			foreach (string perm in aToken.Permissions)
+			{
+				Debug.Log(perm);
+			}
+		}
+		else
+		{
+			Debug.Log("User cancelled login");
+		}
+	}
 
     private void ShowLoadingScreen()
     {
@@ -84,7 +144,7 @@ public class ResultPanel : MonoBehaviour
     private void DownloadQuestions()
     {
         ShowLoadingScreen();
-        Syncano.Instance.Please().CallScriptEndpoint("d019a1036c7ec1348713de2770385b728f050ed1", "get_questions", OnQuestionsDownloaded);
+        SyncanoClient.Instance.Please().CallScriptEndpoint("d019a1036c7ec1348713de2770385b728f050ed1", "get_questions", OnQuestionsDownloaded);
     }
 
     private void OnQuestionsDownloaded(ScriptEndpoint response)

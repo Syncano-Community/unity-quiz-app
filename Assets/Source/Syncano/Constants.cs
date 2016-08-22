@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 
+namespace Syncano {
 public class Constants : MonoBehaviour {
 
 	/// <summary>
@@ -17,4 +18,5 @@ public class Constants : MonoBehaviour {
 	#region script endpoints
 	public const string SCRIPT_ENDPOINT_URL = "https://api.syncano.io/v1.1/instances/{0}/endpoints/scripts/p/{1}/{2}/";
 	#endregion script endpoints
+}
 }

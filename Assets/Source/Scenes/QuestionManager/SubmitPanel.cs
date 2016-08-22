@@ -2,6 +2,8 @@
 using UnityEngine.UI;
 using System.Collections;
 using System.Collections.Generic;
+using Syncano.Data;
+using Syncano;
 
 public class SubmitPanel : CommunicationPanel
 {
@@ -99,7 +101,7 @@ public class SubmitPanel : CommunicationPanel
         isDownloading = true;
         QuestionManagerUI.Instance.LoadingPanel.Show("Loading question...");
         ShowBlockedView();
-        Syncano.Instance.Please().Save(question, OnSubmitSuccess, OnSubmitFail);
+        SyncanoClient.Instance.Please().Save(question, OnSubmitSuccess, OnSubmitFail);
     }
 
     /// <summary>

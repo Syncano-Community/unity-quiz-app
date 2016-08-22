@@ -4,9 +4,12 @@ using System.Reflection;
 using System.Text;
 using System.Collections;
 using System.Collections.Generic;
-
 using UnityEngine.Networking;
+using Syncano.Data;
+using Syncano.Request;
 
+namespace Syncano.Client {
+	
 public class HttpClient : SelfInstantiatingSingleton<HttpClient> {
 
 	/// <summary>
@@ -127,7 +130,7 @@ public class HttpClient : SelfInstantiatingSingleton<HttpClient> {
 	private IEnumerator SendRequest<T>(string url, string serializedObject, Action<Response<T>> onSuccess, Action<Response<T>> onFailure = null, string httpMethodOverride = null) where T : SyncanoObject<T>, new() {
 
 		UnityWebRequest www = new UnityWebRequest(url);
-		www.SetRequestHeader(Constants.HTTP_HEADER_API_KEY, Syncano.Instance.ApiKey);
+		www.SetRequestHeader(Constants.HTTP_HEADER_API_KEY, SyncanoClient.Instance.ApiKey);
 		www.SetRequestHeader("Content-Type", "application/json");
 		UTF8Encoding encoding = new System.Text.UTF8Encoding();
 
@@ -169,7 +172,7 @@ public class HttpClient : SelfInstantiatingSingleton<HttpClient> {
 
 	private IEnumerator RequestScriptEndPoint(string endpointId, string scriptName, System.Action<ScriptEndpoint> callback) {
 
-		StringBuilder sb = new StringBuilder(string.Format(Constants.SCRIPT_ENDPOINT_URL, Syncano.Instance.InstanceName, endpointId, scriptName));
+		StringBuilder sb = new StringBuilder(string.Format(Constants.SCRIPT_ENDPOINT_URL, SyncanoClient.Instance.InstanceName, endpointId, scriptName));
 		UnityWebRequest www = UnityWebRequest.Get(sb.ToString());
 
 		yield return www.Send();
@@ -196,7 +199,7 @@ public class HttpClient : SelfInstantiatingSingleton<HttpClient> {
 	private string UrlBuilder(string id, Type classType) {
 
 		StringBuilder sb = new StringBuilder(Constants.PRODUCTION_SERVER_URL);
-		sb.Append(string.Format(Constants.OBJECTS_DETAIL_URL, Syncano.Instance.InstanceName, classType.ToString(), id.ToString()));
+		sb.Append(string.Format(Constants.OBJECTS_DETAIL_URL, SyncanoClient.Instance.InstanceName, classType.ToString(), id.ToString()));
 
 		return sb.ToString();
 	}
@@ -226,7 +229,6 @@ public class HttpClient : SelfInstantiatingSingleton<HttpClient> {
 		default:
 			return false;
 		}
-
-		return false;
 	}
+}
 }

@@ -2,6 +2,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using Syncano;
 
 [Serializable]
 public class Question : SyncanoObject<Question>

@@ -3,11 +3,13 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Text;
 using UnityEngine.Networking;
+using Syncano.Request;
 
-/// <summary>
-/// Client of Syncano using connection over UnityWebRequest. Provides functionality of sending end geting http request to and from Syncano.
-/// </summary>
-public class Syncano : SelfInstantiatingSingleton<Syncano> {
+namespace Syncano {
+	/// <summary>
+	/// Client of Syncano using connection over UnityWebRequest. Provides functionality of sending end geting http request to and from Syncano.
+	/// </summary>
+	public class SyncanoClient : SelfInstantiatingSingleton<SyncanoClient> {
 	/// <summary>
 	/// The name of the instance.
 	/// </summary>
@@ -28,7 +30,7 @@ public class Syncano : SelfInstantiatingSingleton<Syncano> {
 	/// </summary>
 	/// <param name="apiKey">API key.</param>
 	/// <param name="instanceName">Instance name.</param>
-	public Syncano Init(string apiKey, string instanceName)
+	public SyncanoClient Init(string apiKey, string instanceName)
 	{
 		isInitialized = true;
 		InstanceName = instanceName;
@@ -41,4 +43,5 @@ public class Syncano : SelfInstantiatingSingleton<Syncano> {
 	{
 		return new RequestBuilder();
 	}
+}
 }

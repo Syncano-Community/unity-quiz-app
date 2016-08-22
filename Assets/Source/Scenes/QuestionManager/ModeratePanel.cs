@@ -1,6 +1,8 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
 using System.Collections;
+using Syncano.Data;
+using Syncano;
 
 public class ModeratePanel : CommunicationPanel
 {
@@ -111,7 +113,7 @@ public class ModeratePanel : CommunicationPanel
 
         isDownloading = true;
         QuestionManagerUI.Instance.LoadingPanel.Show("Loading question...");
-        Syncano.Instance.Please().CallScriptEndpoint("6349c3ec1208c0be5ade53b154427d4eb5cb1628", "get_question_to_moderate", OnQuestionDownloaded);
+        SyncanoClient.Instance.Please().CallScriptEndpoint("6349c3ec1208c0be5ade53b154427d4eb5cb1628", "get_question_to_moderate", OnQuestionDownloaded);
     }
 
     /// <summary>
@@ -169,7 +171,7 @@ public class ModeratePanel : CommunicationPanel
         QuestionManagerUI.Instance.LoadingPanel.Show("Updating question...");
         ShowBlockedView();
         question.isModerated = true; // Accept question.
-        Syncano.Instance.Please().Save(question, OnAcceptSuccess, OnAcceptFail);
+        SyncanoClient.Instance.Please().Save(question, OnAcceptSuccess, OnAcceptFail);
     }
 
     /// <summary>
@@ -215,7 +217,7 @@ public class ModeratePanel : CommunicationPanel
         isDownloading = true;
         QuestionManagerUI.Instance.LoadingPanel.Show("Deleting question...");
         ShowBlockedView();
-        Syncano.Instance.Please().Delete(question, OnRejectSuccess, OnRejectFail);
+        SyncanoClient.Instance.Please().Delete(question, OnRejectSuccess, OnRejectFail);
     }
 
     /// <summary>

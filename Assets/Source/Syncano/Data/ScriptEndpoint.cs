@@ -1,6 +1,8 @@
 ﻿using UnityEngine;
 using System.Collections;
+using Syncano.Request;
 
+namespace Syncano.Data {
 public class ScriptEndpoint : SyncanoWebRequest {
 	
 	/// <summary>
@@ -31,4 +33,5 @@ public class ScriptEndpoint : SyncanoWebRequest {
 		/// </summary>
 		public string stdout;
 	}
+}
 }

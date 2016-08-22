@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
+using Syncano.Data;
 
 /// <summary>
 /// Quiz represents group of questions.

@@ -3,8 +3,9 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine.Serialization;
 using System;
+using Syncano.Data;
 
-
+namespace Syncano {
 public class SyncanoObject<T> : JsonData<T> {
 
 	/// <summary>
@@ -17,4 +18,5 @@ public class SyncanoObject<T> : JsonData<T> {
 	/// </summary>
 	public long id;
 
+}
 }

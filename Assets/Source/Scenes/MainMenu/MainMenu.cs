@@ -1,17 +1,19 @@
 ﻿using UnityEngine;
 using UnityEngine.SceneManagement;
 using System.Collections;
+using Syncano;
+using Syncano.Data;
 
 public class MainMenu : MonoBehaviour
 {
     [SerializeField]
     private GameObject loadingScreen;
-    private Syncano syncano; 
+    private SyncanoClient syncano; 
 
 	void Start ()
     {
         loadingScreen.SetActive(false);
-        syncano = Syncano.Instance;
+        syncano = SyncanoClient.Instance;
 		syncano.Init(Constant.API_KEY, Constant.INSTANCE_NAME);
 	}
 
