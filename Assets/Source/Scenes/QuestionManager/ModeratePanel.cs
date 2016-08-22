@@ -132,31 +132,33 @@ public class ModeratePanel : CommunicationPanel
         QuestionManagerUI.Instance.LoadingPanel.Show("Updating question...");
         ShowBlockedView();
         question.isModerated = true; // Accept question.
-        Syncano.Instance.Please().Save(question, OnQuestionAccepted);
+        Syncano.Instance.Please().Save(question, OnAcceptSuccess, OnAcceptFail);
     }
 
-    private void OnQuestionAccepted(Response<Question> response)
+    private void OnAcceptSuccess(Response<Question> response)
     {
         isDownloading = false;
         QuestionManagerUI.Instance.LoadingPanel.Hide();
         Hide();
 
-        if (response.IsSuccess)
-        {
-            SummaryPanel summary = QuestionManagerUI.Instance.SummaryPanel;
-            summary.Show("Success!\nQuestion accepted.");
-            summary.SetSuccessColor();
-            summary.SetBackButton("Back", OnBackClick);
-            summary.SetCustomButton("Next", StartModerate);
-        }
-        else
-        {
-            SummaryPanel summary = QuestionManagerUI.Instance.SummaryPanel;
-            summary.Show("Failed to accept question.\n" + response.webError);
-            summary.SetErrorColor();
-            summary.SetBackButton("Edit", OnEdit);
-            summary.SetCustomButton("Try again", OnTryAcceptAgain);
-        }
+        SummaryPanel summary = QuestionManagerUI.Instance.SummaryPanel;
+        summary.Show("Success!\nQuestion accepted.");
+        summary.SetSuccessColor();
+        summary.SetBackButton("Back", OnBackClick);
+        summary.SetCustomButton("Next", StartModerate);
+    }
+
+    private void OnAcceptFail(Response<Question> response)
+    {
+        isDownloading = false;
+        QuestionManagerUI.Instance.LoadingPanel.Hide();
+        Hide();
+
+        SummaryPanel summary = QuestionManagerUI.Instance.SummaryPanel;
+        summary.Show("Failed to accept question.\n" + response.webError);
+        summary.SetErrorColor();
+        summary.SetBackButton("Edit", OnEdit);
+        summary.SetCustomButton("Try again", OnTryAcceptAgain);
     }
 
     private void RejectQuestion()
@@ -167,31 +169,33 @@ public class ModeratePanel : CommunicationPanel
         isDownloading = true;
         QuestionManagerUI.Instance.LoadingPanel.Show("Deleting question...");
         ShowBlockedView();
-        Syncano.Instance.Please().Delete(question, OnQuestionRejected);
+        Syncano.Instance.Please().Delete(question, OnRejectSuccess, OnRejectFail);
     }
 
-    private void OnQuestionRejected(Response<Question> response)
+    private void OnRejectSuccess(Response<Question> response)
     {
         isDownloading = false;
         QuestionManagerUI.Instance.LoadingPanel.Hide();
         Hide();
 
-        if (response.IsSuccess)
-        {
-            SummaryPanel summary = QuestionManagerUI.Instance.SummaryPanel;
-            summary.Show("Success!\nQuestion deleted.");
-            summary.SetSuccessColor();
-            summary.SetBackButton("Back", OnBackClick);
-            summary.SetCustomButton("Next", StartModerate);
-        }
-        else
-        {
-            SummaryPanel summary = QuestionManagerUI.Instance.SummaryPanel;
-            summary.Show("Failed to delete question.\n" + response.webError);
-            summary.SetErrorColor();
-            summary.SetBackButton("Edit", OnEdit);
-            summary.SetCustomButton("Try again", OnTryRejectAgain);
-        }
+        SummaryPanel summary = QuestionManagerUI.Instance.SummaryPanel;
+        summary.Show("Success!\nQuestion deleted.");
+        summary.SetSuccessColor();
+        summary.SetBackButton("Back", OnBackClick);
+        summary.SetCustomButton("Next", StartModerate);
+    }
+
+    private void OnRejectFail(Response<Question> response)
+    {
+        isDownloading = false;
+        QuestionManagerUI.Instance.LoadingPanel.Hide();
+        Hide();
+
+        SummaryPanel summary = QuestionManagerUI.Instance.SummaryPanel;
+        summary.Show("Failed to delete question.\n" + response.webError);
+        summary.SetErrorColor();
+        summary.SetBackButton("Edit", OnEdit);
+        summary.SetCustomButton("Try again", OnTryRejectAgain);
     }
 
     private void OnTryDownloadAgain()

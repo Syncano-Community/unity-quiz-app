@@ -75,31 +75,33 @@ public class SubmitPanel : CommunicationPanel
         isDownloading = true;
         QuestionManagerUI.Instance.LoadingPanel.Show("Loading question...");
         ShowBlockedView();
-        Syncano.Instance.Please().Save(question, OnQuestionSubmitted);
+        Syncano.Instance.Please().Save(question, OnSubmitSuccess, OnSubmitFail);
     }
 
-    private void OnQuestionSubmitted(Response<Question> response)
+    private void OnSubmitSuccess(Response<Question> response)
     {
         isDownloading = false;
         QuestionManagerUI.Instance.LoadingPanel.Hide();
         Hide();
 
-        if (response.IsSuccess)
-        {
-            SummaryPanel summary = QuestionManagerUI.Instance.SummaryPanel;
-            summary.Show("Success!\nQuestion accepted.");
-            summary.SetSuccessColor();
-            summary.SetBackButton("Back", OnBackClick);
-            summary.SetCustomButton("Add Next", StartAddQuestion);
-        }
-        else
-        {
-            SummaryPanel summary = QuestionManagerUI.Instance.SummaryPanel;
-            summary.Show("Failed to accept question.\n" + response.webError);
-            summary.SetErrorColor();
-            summary.SetBackButton("Edit", OnEdit);
-            summary.SetCustomButton("Try again", OnTryAgain);
-        }
+        SummaryPanel summary = QuestionManagerUI.Instance.SummaryPanel;
+        summary.Show("Success!\nQuestion submitted.");
+        summary.SetSuccessColor();
+        summary.SetBackButton("Back", OnBackClick);
+        summary.SetCustomButton("Add Next", StartAddQuestion);
+    }
+
+    private void OnSubmitFail(Response<Question> response)
+    {
+        isDownloading = false;
+        QuestionManagerUI.Instance.LoadingPanel.Hide();
+        Hide();
+
+        SummaryPanel summary = QuestionManagerUI.Instance.SummaryPanel;
+        summary.Show("Failed to submit question.\n" + response.webError);
+        summary.SetErrorColor();
+        summary.SetBackButton("Edit", OnEdit);
+        summary.SetCustomButton("Try again", OnTryAgain);
     }
 
     private void OnTryAgain()
