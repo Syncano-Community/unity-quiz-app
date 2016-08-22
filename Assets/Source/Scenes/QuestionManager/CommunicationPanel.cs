@@ -4,6 +4,9 @@ using System.Collections.Generic;
 
 public class CommunicationPanel : MonoBehaviour
 {
+    /// <summary>
+    /// Use form and question panel data to fill question fields.
+    /// </summary>
     protected void FillQuestion(Question question)
     {
         QuestionPanel questionPanel = QuestionManagerUI.Instance.QuestionPanel;
@@ -21,6 +24,9 @@ public class CommunicationPanel : MonoBehaviour
         question.answers.Add(questionPanel.GetAnswerView(AnswerType.D).GetText());
     }
 
+    /// <summary>
+    /// Use values for mquestion to fill form and question panel.
+    /// </summary>
     protected void FillForm(Question question)
     {
         QuestionPanel questionPanel = QuestionManagerUI.Instance.QuestionPanel;
@@ -28,6 +34,9 @@ public class CommunicationPanel : MonoBehaviour
         QuestionManagerUI.Instance.FormPanel.Difficulty = question.difficultyType;
     }
 
+    /// <summary>
+    /// Clear form.
+    /// </summary>
     protected void ClearForm()
     {
         QuestionPanel questionPanel = QuestionManagerUI.Instance.QuestionPanel;

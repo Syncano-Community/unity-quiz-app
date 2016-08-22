@@ -18,11 +18,15 @@ public class ModeratePanel : CommunicationPanel
 
     void Start()
     {
+        // Prepare onClick callbacks.
         acceptButton.onClick.AddListener(() => OnAcceptClick());
         rejectButton.onClick.AddListener(() => OnRejectClick());
         backButton.onClick.AddListener(() => OnBackClick());
     }
 
+    /// <summary>
+    /// Show moderation panel and start downloading question.
+    /// </summary>
     public void StartModerate()
     {
         question = null;
@@ -33,16 +37,25 @@ public class ModeratePanel : CommunicationPanel
         DownloadQuestion();
     }
 
+    /// <summary>
+    /// Show moderation panel.
+    /// </summary>
     public void Show()
     {
         gameObject.SetActive(true);
     }
 
+    /// <summary>
+    /// Hide moderation panel.
+    /// </summary>
     public void Hide()
     {
         gameObject.SetActive(false);
     }
 
+    /// <summary>
+    /// On accept click callback.
+    /// </summary>
     public void OnAcceptClick()
     {
         FillQuestion(question);
@@ -51,11 +64,17 @@ public class ModeratePanel : CommunicationPanel
             AcceptQuestion();
     }
 
+    /// <summary>
+    /// On reject click callback.
+    /// </summary>
     public void OnRejectClick()
     {
         RejectQuestion();
     }
 
+    /// <summary>
+    /// On back click callback.
+    /// </summary>
     public void OnBackClick()
     {
         Hide();
@@ -64,18 +83,27 @@ public class ModeratePanel : CommunicationPanel
         QuestionManagerUI.Instance.MenuPanel.Show();
     }
 
+    /// <summary>
+    /// Enable edit.
+    /// </summary>
     private void ShowEditView()
     {
         QuestionManagerUI.Instance.QuestionPanel.SetEditMode();
         QuestionManagerUI.Instance.FormPanel.Show();
     }
 
+    /// <summary>
+    /// Disable edit.
+    /// </summary>
     private void ShowBlockedView()
     {
         QuestionManagerUI.Instance.QuestionPanel.SetPlayMode();
         QuestionManagerUI.Instance.FormPanel.Hide();
     }
 
+    /// <summary>
+    /// Start downloading question. Show loading panel.
+    /// </summary>
     private void DownloadQuestion()
     {
         if (isDownloading)
@@ -86,6 +114,9 @@ public class ModeratePanel : CommunicationPanel
         Syncano.Instance.Please().CallScriptEndpoint("6349c3ec1208c0be5ade53b154427d4eb5cb1628", "get_question_to_moderate", OnQuestionDownloaded);
     }
 
+    /// <summary>
+    /// Question download finished.
+    /// </summary>
     private void OnQuestionDownloaded(ScriptEndpoint endpoint)
     {
         isDownloading = false;
@@ -113,6 +144,9 @@ public class ModeratePanel : CommunicationPanel
         }
     }
 
+    /// <summary>
+    /// Shows the download fail summary.
+    /// </summary>
     private void ShowDownloadFailSummary(string failMessage)
     {
         Hide();
@@ -123,6 +157,9 @@ public class ModeratePanel : CommunicationPanel
         summary.SetCustomButton("Try again", OnTryDownloadAgain);
     }
 
+    /// <summary>
+    /// Mark question as moderated and send update.
+    /// </summary>
     private void AcceptQuestion()
     {
         if (isDownloading)
@@ -135,6 +172,9 @@ public class ModeratePanel : CommunicationPanel
         Syncano.Instance.Please().Save(question, OnAcceptSuccess, OnAcceptFail);
     }
 
+    /// <summary>
+    /// Question update success.
+    /// </summary>
     private void OnAcceptSuccess(Response<Question> response)
     {
         isDownloading = false;
@@ -148,6 +188,9 @@ public class ModeratePanel : CommunicationPanel
         summary.SetCustomButton("Next", StartModerate);
     }
 
+    /// <summary>
+    /// Question update fail.
+    /// </summary>
     private void OnAcceptFail(Response<Question> response)
     {
         isDownloading = false;
@@ -161,6 +204,9 @@ public class ModeratePanel : CommunicationPanel
         summary.SetCustomButton("Try again", OnTryAcceptAgain);
     }
 
+    /// <summary>
+    /// Delete pending question.
+    /// </summary>
     private void RejectQuestion()
     {
         if (isDownloading)
@@ -172,6 +218,9 @@ public class ModeratePanel : CommunicationPanel
         Syncano.Instance.Please().Delete(question, OnRejectSuccess, OnRejectFail);
     }
 
+    /// <summary>
+    /// Question delete success.
+    /// </summary>
     private void OnRejectSuccess(Response<Question> response)
     {
         isDownloading = false;
@@ -185,6 +234,9 @@ public class ModeratePanel : CommunicationPanel
         summary.SetCustomButton("Next", StartModerate);
     }
 
+    /// <summary>
+    /// Question delete fail.
+    /// </summary>
     private void OnRejectFail(Response<Question> response)
     {
         isDownloading = false;
@@ -198,24 +250,36 @@ public class ModeratePanel : CommunicationPanel
         summary.SetCustomButton("Try again", OnTryRejectAgain);
     }
 
+    /// <summary>
+    /// Try download again callback.
+    /// </summary>
     private void OnTryDownloadAgain()
     {
         Show();
         DownloadQuestion();
     }
 
+    /// <summary>
+    /// Try accept again.
+    /// </summary>
     private void OnTryAcceptAgain()
     {
         Show();
         AcceptQuestion();
     }
 
+    /// <summary>
+    /// Try reject again.
+    /// </summary>
     private void OnTryRejectAgain()
     {
         Show();
         RejectQuestion();
     }
 
+    /// <summary>
+    /// Switch back to edit mode.
+    /// </summary>
     private void OnEdit()
     {
         Show();

@@ -13,9 +13,13 @@ public class SubmitPanel : CommunicationPanel
 
     void Start()
     {
+        // Prepare onClick callback.
         submitButton.onClick.AddListener(() => OnSubmitClick());
     }
 
+    /// <summary>
+    /// Show add question panel and start edit mode.
+    /// </summary>
     public void StartAddQuestion()
     {
         question = new Question();
@@ -26,17 +30,25 @@ public class SubmitPanel : CommunicationPanel
         Show();
     }
 
+    /// <summary>
+    /// Show add question panel.
+    /// </summary>
     public void Show()
     {
         gameObject.SetActive(true);
     }
 
+    /// <summary>
+    /// Hide add question panel.
+    /// </summary>
     public void Hide()
     {
         gameObject.SetActive(false);
     }
 	
-
+    /// <summary>
+    /// On submit click callback.
+    /// </summary>
     private void OnSubmitClick()
     {
         FillQuestion(question);
@@ -47,6 +59,9 @@ public class SubmitPanel : CommunicationPanel
         }
     }
 
+    /// <summary>
+    /// On back click callback.
+    /// </summary>
     public void OnBackClick()
     {
         Hide();
@@ -55,18 +70,27 @@ public class SubmitPanel : CommunicationPanel
         QuestionManagerUI.Instance.MenuPanel.Show();
     }
 
+    /// <summary>
+    /// Enable edit mode.
+    /// </summary>
     private void ShowEditView()
     {
         QuestionManagerUI.Instance.QuestionPanel.SetEditMode();
         QuestionManagerUI.Instance.FormPanel.Show();
     }
 
+    /// <summary>
+    /// Disable edit mode.
+    /// </summary>
     private void ShowBlockedView()
     {
         QuestionManagerUI.Instance.QuestionPanel.SetPlayMode();
         QuestionManagerUI.Instance.FormPanel.Hide();
     }
 
+    /// <summary>
+    /// Start question submit and show loading screen.
+    /// </summary>
     private void SubmitQuestion()
     {
         if (isDownloading)
@@ -78,6 +102,9 @@ public class SubmitPanel : CommunicationPanel
         Syncano.Instance.Please().Save(question, OnSubmitSuccess, OnSubmitFail);
     }
 
+    /// <summary>
+    /// Add question success.
+    /// </summary>
     private void OnSubmitSuccess(Response<Question> response)
     {
         isDownloading = false;
@@ -91,6 +118,9 @@ public class SubmitPanel : CommunicationPanel
         summary.SetCustomButton("Add Next", StartAddQuestion);
     }
 
+    /// <summary>
+    /// Add question fail.
+    /// </summary>
     private void OnSubmitFail(Response<Question> response)
     {
         isDownloading = false;
@@ -104,12 +134,18 @@ public class SubmitPanel : CommunicationPanel
         summary.SetCustomButton("Try again", OnTryAgain);
     }
 
+    /// <summary>
+    /// Try submit again.
+    /// </summary>
     private void OnTryAgain()
     {
         Show();
         SubmitQuestion();
     }
 
+    /// <summary>
+    /// Switch back to edit mode.
+    /// </summary>
     private void OnEdit()
     {
         Show();
