@@ -50,11 +50,7 @@ public class MainMenu : MonoBehaviour
 
     private void OnQuestionsDownloaded(ScriptEndpoint response)
     {
-        if (string.IsNullOrEmpty(response.webError) == false)
-        {
-            HandleError(response);
-        }
-        else
+        if (response.IsSuccess)
         {
             Quiz quiz = Quiz.FromJson(response.stdout);
             if (quiz.IsValid())
@@ -65,6 +61,10 @@ public class MainMenu : MonoBehaviour
             {
                 HandleNotValidQuiz(quiz);
             }
+        }
+        else
+        {
+            HandleError(response);
         }
     }
 

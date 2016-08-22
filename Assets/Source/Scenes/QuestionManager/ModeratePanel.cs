@@ -124,7 +124,7 @@ public class ModeratePanel : CommunicationPanel
         isDownloading = false;
         QuestionManagerUI.Instance.LoadingPanel.Hide();
 
-        if (string.IsNullOrEmpty(endpoint.webError))
+        if (endpoint.IsSuccess)
         {
             if (string.IsNullOrEmpty(endpoint.stdout) || "undefined".Equals(endpoint.stdout))
             {

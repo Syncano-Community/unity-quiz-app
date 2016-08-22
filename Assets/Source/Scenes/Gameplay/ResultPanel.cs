@@ -151,7 +151,7 @@ public class ResultPanel : MonoBehaviour
     {
         HideLoadingScreen();
 
-        if (response != null && response.result != null && string.IsNullOrEmpty(response.webError))
+        if (response.IsSuccess)
         {
             Quiz quiz = Quiz.FromJson(response.stdout);
             if (quiz.IsValid())
