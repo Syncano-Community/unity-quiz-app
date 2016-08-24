@@ -37,20 +37,12 @@ public class ResultPanel : MonoBehaviour
 	{
 		if (!FB.IsInitialized) {
 			// Initialize the Facebook SDK
+			Debug.Log("here1");
 			FB.Init(InitCallback);
 		} else {
+			Debug.Log("here2");
 			// Already initialized, signal an app activation App Event
 			FB.ActivateApp();
-		}
-	}
-
-	private void InitCallback ()
-	{
-		if (FB.IsInitialized) {
-			
-			FB.ActivateApp();
-		} else {
-			Debug.Log("Failed to Initialize the Facebook SDK");
 		}
 	}
 
@@ -83,23 +75,8 @@ public class ResultPanel : MonoBehaviour
 
     /* ui event */ public void OnShareClick()
     {
-        Debug.Log("Your reward is: " + reward.label + " (Raw value: " + reward.value + ")");
-
-		var perms = new List<string>(){"publish_actions"};
-		FB.LogInWithPublishPermissions (perms, AuthCallback);	
+		FB.LogInWithPublishPermissions(new List<string>(){"publish_actions"}, AuthCallback);	
     }
-
-	private void ShareCallback (IShareResult result) {
-		if (result.Cancelled || !string.IsNullOrEmpty(result.Error)) {
-			Debug.Log("ShareLink Error: "+result.Error);
-		} else if (!string.IsNullOrEmpty(result.PostId)) {
-			// Print post identifier of the shared content
-			Debug.Log(result.PostId);
-		} else {
-			// Share succeeded without postID
-			Debug.Log("ShareLink success!");
-		}
-	}
 
     /* ui event */ public void OnMenuClick()
     {
@@ -110,26 +87,6 @@ public class ResultPanel : MonoBehaviour
     {
         DownloadQuestions();
     }
-
-	private void AuthCallback(ILoginResult result)
-	{
-		if (FB.IsLoggedIn)
-		{
-			// AccessToken class will have session details
-			var aToken = Facebook.Unity.AccessToken.CurrentAccessToken;
-			// Print current access token's User ID
-			Debug.Log(aToken.UserId);
-			// Print current access token's granted permissions
-			foreach (string perm in aToken.Permissions)
-			{
-				Debug.Log(perm);
-			}
-		}
-		else
-		{
-			Debug.Log("User cancelled login");
-		}
-	}
 
     private void ShowLoadingScreen()
     {
@@ -166,4 +123,55 @@ public class ResultPanel : MonoBehaviour
         Setup.SetQuiz(quiz);
         SceneManager.LoadScene(Constant.SCENE_GAMEPLAY);
     }
+
+
+	#region facebook
+	/// <summary>
+	/// The callback method when initializing facebook sdk.
+	/// </summary>
+	private void InitCallback()
+	{
+		if (FB.IsInitialized) {
+
+			FB.ActivateApp();
+		} else {
+			Debug.LogError("Failed to Initialize the Facebook SDK");
+		}
+	}
+
+	/// <summary>
+	/// The callback method when authenticating user.
+	/// </summary>
+	/// <param name="result">Result.</param>
+	private void AuthCallback(ILoginResult result)
+	{
+		if(FB.IsLoggedIn)
+		{
+			StartCoroutine(TakeScreenshot());
+		}
+		else
+		{
+			Debug.Log("User cancelled login");
+		}
+	}
+
+	private IEnumerator TakeScreenshot() 
+	{
+		yield return new WaitForEndOfFrame();
+
+		var width = Screen.width;
+		var height = Screen.height;
+		var tex = new Texture2D(width, height, TextureFormat.RGB24, false);
+
+		tex.ReadPixels(new Rect(0, 0, width, height), 0, 0);
+		tex.Apply();
+		byte[] screenshot = tex.EncodeToPNG();
+	
+		var wwwForm = new WWWForm();
+		wwwForm.AddBinaryData("image", screenshot, "Screenshot.png");
+		wwwForm.AddField("name", "According to Syncano Developer Quiz my salary should be " + reward.value + "$ !! \n" + "Read more how to create a similar application on https://www.syncano.io");
+
+		FB.API("me/photos", Facebook.Unity.HttpMethod.POST,null, wwwForm);
+	}
+	#endregion facebook
 }
