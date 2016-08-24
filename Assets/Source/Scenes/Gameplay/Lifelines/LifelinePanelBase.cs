@@ -40,10 +40,10 @@ public class LifelinePanelBase : MonoBehaviour
             correctChance -= 10;
             break;
         case DifficultyType.MEDIUM:
-            correctChance -= 25;
+            correctChance -= 20;
             break;
         case DifficultyType.HARD:
-            correctChance -= 50;
+            correctChance -= 30;
             break;
         }
 

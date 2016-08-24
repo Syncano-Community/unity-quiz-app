@@ -32,11 +32,11 @@ public class AudiencePanel : LifelinePanelBase
             }
             else if (isCorrect && pickCorrect)
             {
-                weights[i] = Random.Range(50, 100);
+                weights[i] = Random.Range(70, 100);
             }
             else
             {
-                weights[i] = Random.Range(0, 50);
+                weights[i] = Random.Range(0, 60);
             }
 
             totalWeight += weights[i];
