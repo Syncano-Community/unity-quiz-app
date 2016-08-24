@@ -10,13 +10,17 @@ public class SubmitPanel : CommunicationPanel
     [SerializeField]
     private Button submitButton;
 
+    [SerializeField]
+    private Button backButton;
+
     private bool isDownloading;
     private Question question;
 
     void Start()
     {
-        // Prepare onClick callback.
+        // Prepare onClick callbacks.
         submitButton.onClick.AddListener(() => OnSubmitClick());
+        backButton.onClick.AddListener(() => OnBackClick());
     }
 
     /// <summary>
