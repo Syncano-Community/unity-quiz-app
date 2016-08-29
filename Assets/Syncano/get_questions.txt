@@ -6,7 +6,7 @@ var _ = require("lodash");
 //API key with ignoer ACL permission
 api_key = "7aa2f6396632efd9e93c02cf6aaec401f77a481b"; 
 //class name which we take data from
-class_name = "questions"; 
+class_name = "question"; 
 
 //Syncano object instance
 var connection = Syncano({apiKey: api_key, 
@@ -16,7 +16,7 @@ defaults: {instanceName : "unity-quiz-app", className: class_name} });
 var DataObject = connection.DataObject;
 
 //we use this variable to filter valid only questions
-var filter = {"isValid":{"_eq":true}}; 
+var filter = {"isModerated":{"_eq":true}}; 
  //exclusive fields we want to return only
 var fields = ["text", "answers", "difficultyType", "id"];
 

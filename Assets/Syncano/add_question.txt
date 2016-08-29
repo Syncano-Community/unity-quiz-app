@@ -1,0 +1,22 @@
+//include Syncano
+var Syncano = require("syncano"); 
+ //include lodash library 
+var _ = require("lodash");
+
+var question_text = ARGS.question_text;
+var question_answers = ARGS.question_answers;
+var difficult_type = ARGS.difficulty_type;
+console.log(ARGS);
+//API key with ignoer ACL permission
+api_key = "7aa2f6396632efd9e93c02cf6aaec401f77a481b"; 
+//class name which we take data from
+class_name = "questions"; 
+
+//Syncano object instance
+var connection = Syncano({apiKey: api_key, 
+defaults: {instanceName : "unity-quiz-app", className: class_name} }); 
+
+//data object we operate on
+var DataObject = connection.DataObject; 
+
+console.log(question_answers);

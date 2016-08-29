@@ -30,3 +30,5 @@ sysinfo.txt
 *.unitypackage
 Unity Quiz App/Library
 Unity Quiz App/Temp
+/Build-WebGL/
+/Android-Build/

@@ -1,0 +1,42 @@
+//This is a simple script to generate at least 15 empty questions for millionaire application
+
+//Include request class for making simple POST and GET calls
+var request = require('request');
+
+//API Key can be obtained from Settings panel under API Keys section.
+var api_key = "API_KEY"; 
+
+//Instance name can be seen at top left corner of the dashboard
+var instance_name ="INSTANCE_NAME";
+
+//The number of questions to create
+var questions_count = 15;
+
+//Here we loop and make a single call to Syncano with dummy question
+for(i = 0; i < questions_count; i++) {
+    
+    //There are three difficulty questions. 0 stands for easy, 1 medium and 2 hard.
+    //Questions are later ordered by their difficulty level.
+    var difficultyType = i % 3;
+    
+    //Options variable is used to preare all necessary data to create a question
+    var options = {
+      
+      url: 'https://api.syncano.io/v1.1/instances/' + instance_name + '/classes/question/objects/',
+      headers: {
+        'X-API-KEY': api_key,
+      },
+      //Form dictionary is used to carry data of our object to create 
+      form: {
+        text: "Question " + i,
+        isModerated: true,
+        difficultyType: difficultyType,
+        //Important note. You need to use JSON.stringify in most cases when sending data to either Syncano server or to your application!!
+        //We always set correct answet as first one.
+        answers: JSON.stringify(['Correct','Wrong1','Wrong2','Wrong3'])
+      }
+    };
+
+    //Send our request to create new question to Syncano
+    request.post(options);
+}

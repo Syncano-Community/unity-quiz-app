@@ -1,0 +1,25 @@
+var request = require('request');
+var _ = require('lodash');
+var api_key = "adfee89ec99b7022de16383185b299c29459e1fa"; 
+var filter = {"isModerated":{"_eq":false}}; 
+var fields = "isModerated,text,answers,difficultyType,id";
+
+var options = {
+  url: 'https://api.syncano.io/v1.1/instances/unity-quiz-app/classes/question/objects/',
+  headers: {
+    'X-API-KEY': api_key,
+  },
+ qs: {
+    query: JSON.stringify(filter),
+    fields: fields,
+    page_size: 1
+  }
+};
+
+request.get(options, function(err,httpResponse,body) {
+    //parse response to array
+    var raw = JSON.parse(body);
+
+    //return list of questions in JSON format
+    console.log(JSON.stringify(raw.objects[0]));
+});
