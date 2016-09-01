@@ -31,8 +31,8 @@ public class SubmitPanel : CommunicationPanel
         question = new Question();
         question.isModerated = false;
 
-        ShowEditView();
         QuestionManagerUI.Instance.QuestionPanel.ClearViews();
+        ShowEditView();
         Show();
     }
 

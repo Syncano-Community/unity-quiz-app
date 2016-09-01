@@ -32,8 +32,8 @@ public class ModeratePanel : CommunicationPanel
     public void StartModerate()
     {
         question = null;
-        QuestionManagerUI.Instance.QuestionPanel.SetPlayMode();
         QuestionManagerUI.Instance.QuestionPanel.ClearViews();
+        QuestionManagerUI.Instance.QuestionPanel.SetPlayMode();
         QuestionManagerUI.Instance.FormPanel.Hide();
         Show();
         DownloadQuestion();
