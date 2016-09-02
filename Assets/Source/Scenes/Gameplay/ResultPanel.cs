@@ -33,16 +33,17 @@ public class ResultPanel : MonoBehaviour
 
     private ScoreRow reward;
 
-	void Awake()
+	void Start()
 	{
 		if (!FB.IsInitialized) {
 			// Initialize the Facebook SDK
-			Debug.Log("here1");
 			FB.Init(InitCallback);
-		} else {
-			Debug.Log("here2");
+		} 
+		else {
 			// Already initialized, signal an app activation App Event
-			FB.ActivateApp();
+			#if !UNITY_WEBGL
+				FB.ActivateApp();
+			#endif
 		}
 	}
 
@@ -132,8 +133,9 @@ public class ResultPanel : MonoBehaviour
 	private void InitCallback()
 	{
 		if (FB.IsInitialized) {
-
-			FB.ActivateApp();
+			#if !UNITY_WEBGL
+				FB.ActivateApp();
+			#endif
 		} else {
 			Debug.LogError("Failed to Initialize the Facebook SDK");
 		}
