@@ -6,7 +6,7 @@ namespace Syncano.Data {
 /// <summary>
 /// Wrapper class for getting response from Syncano.
 /// </summary>
-public class Response<T> : SyncanoWebRequest where T : SyncanoObject<T>, new() {
+	public class Response<T> : SyncanoWebRequest {//where T : SyncanoObject<T>, new() {
 	
 	/// <summary>
 	/// Deserialized data.

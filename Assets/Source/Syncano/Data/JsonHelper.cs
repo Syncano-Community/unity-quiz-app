@@ -1,7 +1,7 @@
-﻿using System;
-using UnityEngine;
+﻿using UnityEngine;
+using System;
+using System.Collections;
 
-namespace Syncano.Data {
 public class JsonHelper
 {
 	public static T[] GetJsonArray<T>(string json)
@@ -17,4 +17,4 @@ public class JsonHelper
 		public T[] array;
 	}
 }
-}
+

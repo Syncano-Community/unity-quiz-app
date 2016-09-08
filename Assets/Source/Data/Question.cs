@@ -5,7 +5,7 @@ using System.Collections.Generic;
 using Syncano;
 
 [Serializable]
-public class Question : SyncanoObject<Question>
+public class Question : SyncanoObject
 {
 	/// <summary>
 	/// Quesion's text.

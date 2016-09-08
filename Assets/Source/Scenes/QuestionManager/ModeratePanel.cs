@@ -133,7 +133,7 @@ public class ModeratePanel : CommunicationPanel
             }
             else
             {
-                question = Question.FromJson(endpoint.stdout);
+				question = JsonUtility.FromJson<Question>(endpoint.stdout);
                 FillForm(question);
                 ShowEditView();
                 return;

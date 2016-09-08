@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Text;
 using UnityEngine.Networking;
 using Syncano.Request;
+using Syncano.Data;
 
 namespace Syncano {
 	/// <summary>

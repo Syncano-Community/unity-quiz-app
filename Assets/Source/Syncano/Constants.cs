@@ -21,5 +21,11 @@ public class Constants {
 	#region script endpoints
 	public const string SCRIPT_ENDPOINT_URL = "https://api.syncano.io/v1.1/instances/{0}/endpoints/scripts/p/{1}/{2}/";
 	#endregion script endpoints
+	
+	#region channel 
+	public const string CHANNELS_LIST_URL = "/v1.1/instances/{0}/channels/";
+	public const string CHANNELS_POLL_URL = "/v1.1/instances/{0}/channels/{1}/poll/";
+	#endregion channel
+
 }
 }
