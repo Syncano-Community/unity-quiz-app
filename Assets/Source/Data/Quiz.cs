@@ -1,6 +1,8 @@
 ﻿using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
 using Syncano.Data;
+using Newtonsoft.Json;
 
 /// <summary>
 /// Quiz represents group of questions.
@@ -12,14 +14,14 @@ public class Quiz
     /// <summary>
     /// The questions.
     /// </summary>
-    public Question[] questions = new Question[QUESTION_COUNT];
+	public List<Question> questions = new List<Question>(QUESTION_COUNT);
 
     /// <summary>
     /// Gets the question by index.
     /// </summary>
     public Question GetQuestion(int index)
     {
-        if (questions != null && index >= 0 && index < questions.Length)
+		if (questions != null && index >= 0 && index < questions.Count)
             return questions[index];
 
         return null;
@@ -48,7 +50,7 @@ public class Quiz
         if (questions == null)
             return 0;
                 
-        return questions.Length;
+		return questions.Count;
     }
 
     /// <summary>
@@ -56,7 +58,7 @@ public class Quiz
     /// </summary>
     public bool IsValid()
     {
-        if (questions == null || questions.Length != QUESTION_COUNT)
+		if (questions == null || questions.Count != QUESTION_COUNT)
         {
             Debug.LogWarning("Wrong number of questions.");
             return false;
@@ -79,7 +81,7 @@ public class Quiz
 			return default(Quiz); // Return null for generic.
 
 		Quiz instance = new Quiz();
-		instance.questions = JsonHelper.GetJsonArray<Question>(json);
+		instance.questions = JsonConvert.DeserializeObject<List<Question>>(json);
 		return instance;
 	}
 }

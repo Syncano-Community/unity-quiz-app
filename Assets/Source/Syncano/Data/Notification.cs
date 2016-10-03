@@ -2,42 +2,46 @@
 using System.Collections;
 using Syncano;
 using System.Xml;
+using Newtonsoft.Json;
 
-[System.Serializable]
 public class Notification : SyncanoObject {
 
 	/// <summary>
 	/// The payload.
 	/// </summary>
-	public Payload payload;
+	[JsonProperty("payload")]
+	public Payload Result { get; set; }
 
 	/// <summary>
 	/// The admin.
 	/// </summary>
-	public Author admin;
+	[JsonProperty("admin")]
+	public Author Admin;
 
 	/// <summary>
 	/// The action.
 	/// </summary>
-	public MetaData action;
+	[JsonProperty("metadata")]
+	public MetaData Action;
 
 	public Notification() { }
 
-	[System.Serializable]
+
 	public struct Payload
 	{
-		public string content;
+		[JsonProperty("content")]
+		public string Content;
 	}
 
-	[System.Serializable]
 	public struct Author
 	{
-		public int admin;
+		[JsonProperty("admin")]
+		public int Admin { get; set; }
 	}
 
-	[System.Serializable]
 	public struct MetaData
 	{
-		string type;
+		[JsonProperty("type")]
+		public string Type { get; set; }
 	}
 }

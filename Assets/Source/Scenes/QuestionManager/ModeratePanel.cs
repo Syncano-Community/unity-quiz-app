@@ -113,7 +113,7 @@ public class ModeratePanel : CommunicationPanel
 
         isDownloading = true;
         QuestionManagerUI.Instance.LoadingPanel.Show("Loading question...");
-		SyncanoClient.Instance.Please().CallScriptEndpoint(Constant.SCRIPT_ENDPOINT_GET_QUESTION_TO_MODERATE_ID, Constant.SCRIPT_ENDPOINT_GET_QUESTION_TO_MODERATE_NAME, OnQuestionDownloaded);
+		SyncanoClient.Instance.Please().RunScriptEndpointUrl(Constant.SCRIPT_ENDPOINT_GET_QUESTION_TO_MODERATE_URL, OnQuestionDownloaded );
     }
 
     /// <summary>

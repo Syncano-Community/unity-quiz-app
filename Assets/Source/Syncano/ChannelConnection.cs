@@ -78,6 +78,8 @@ public class ChannelConnection {
 	/// </summary>
 	private MonoBehaviour context;
 
+	private ChannelConnection() { }
+
 	public ChannelConnection(MonoBehaviour context, Action<Response<Notification>> onNotification, Action<Response<Notification>> onError) 
 	{ 
 		OnNotification = onNotification; 
@@ -95,7 +97,7 @@ public class ChannelConnection {
 	/// </summary>
 	/// <param name="context">Context.</param>
 	/// <param name="channel">Channel.</param>
-	public Coroutine Start(MonoBehaviour context, string channel, int lastId = 0) 
+	public Coroutine Start(string channel, int lastId = 0) 
 	{
 		isRunning = true;
 		this.channel = channel;
@@ -115,7 +117,7 @@ public class ChannelConnection {
 	/// Stop polling messages and set channel to null.
 	/// </summary>
 	/// <param name="context">Context.</param>
-	public void Stop(MonoBehaviour context)
+	public void Stop()
 	{
 		if(pollRequestLoop != null)
 		{

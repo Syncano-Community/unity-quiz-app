@@ -102,7 +102,7 @@ public class ResultPanel : MonoBehaviour
     private void DownloadQuestions()
     {
         ShowLoadingScreen();
-		SyncanoClient.Instance.Please().CallScriptEndpoint(Constant.SCRIPT_ENDPOINT_GET_QUESTIONS_ID, Constant.SCRIPT_ENDPOINT_GET_QUESTIONS_NAME, OnQuestionsDownloaded);
+		SyncanoClient.Instance.Please().RunScriptEndpointUrl(Constant.SCRIPT_ENDPOINT_GET_QUESTIONS_URL, OnQuestionsDownloaded);
     }
 
     private void OnQuestionsDownloaded(ScriptEndpoint response)
