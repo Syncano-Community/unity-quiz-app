@@ -7,6 +7,7 @@ using Facebook.Unity;
 using System;
 using Syncano;
 using Syncano.Data;
+using Newtonsoft.Json;
 
 public class ResultPanel : MonoBehaviour
 {
@@ -111,7 +112,9 @@ public class ResultPanel : MonoBehaviour
 
         if (response.IsSuccess)
         {
-            Quiz quiz = Quiz.FromJson(response.stdout);
+			Quiz quiz = JsonConvert.DeserializeObject<Quiz>(response.stdout);
+
+            //Quiz quiz = Quiz.FromJson(response.stdout);
             if (quiz.IsValid())
             {
                 StartGame(quiz);

@@ -10,18 +10,18 @@ public class CommunicationPanel : MonoBehaviour
     protected void FillQuestion(Question question)
     {
         QuestionPanel questionPanel = QuestionManagerUI.Instance.QuestionPanel;
-        question.text = questionPanel.GetQuestionView().GetText();
-        question.difficultyType = QuestionManagerUI.Instance.FormPanel.Difficulty;
+        question.Text = questionPanel.GetQuestionView().GetText();
+        question.DifficultyType = QuestionManagerUI.Instance.FormPanel.Difficulty;
 
-        if (question.answers == null)
-            question.answers = new List<string>();
+        if (question.Answers == null)
+            question.Answers = new List<string>();
         else 
-            question.answers.Clear();
+            question.Answers.Clear();
 
-        question.answers.Add(questionPanel.GetAnswerView(AnswerType.A).GetText());
-        question.answers.Add(questionPanel.GetAnswerView(AnswerType.B).GetText());
-        question.answers.Add(questionPanel.GetAnswerView(AnswerType.C).GetText());
-        question.answers.Add(questionPanel.GetAnswerView(AnswerType.D).GetText());
+        question.Answers.Add(questionPanel.GetAnswerView(AnswerType.A).GetText());
+        question.Answers.Add(questionPanel.GetAnswerView(AnswerType.B).GetText());
+        question.Answers.Add(questionPanel.GetAnswerView(AnswerType.C).GetText());
+        question.Answers.Add(questionPanel.GetAnswerView(AnswerType.D).GetText());
     }
 
     /// <summary>
@@ -31,7 +31,7 @@ public class CommunicationPanel : MonoBehaviour
     {
         QuestionPanel questionPanel = QuestionManagerUI.Instance.QuestionPanel;
         questionPanel.FillQuestion(question);
-        QuestionManagerUI.Instance.FormPanel.Difficulty = question.difficultyType;
+        QuestionManagerUI.Instance.FormPanel.Difficulty = question.DifficultyType;
     }
 
     /// <summary>

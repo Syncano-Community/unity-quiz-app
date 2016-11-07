@@ -3,6 +3,7 @@ using UnityEngine.UI;
 using System.Collections;
 using Syncano.Data;
 using Syncano;
+using Newtonsoft.Json;
 
 public class ModeratePanel : CommunicationPanel
 {
@@ -133,7 +134,7 @@ public class ModeratePanel : CommunicationPanel
             }
             else
             {
-				question = JsonUtility.FromJson<Question>(endpoint.stdout);
+				question = JsonConvert.DeserializeObject<Question>(endpoint.stdout);
                 FillForm(question);
                 ShowEditView();
                 return;
@@ -170,7 +171,7 @@ public class ModeratePanel : CommunicationPanel
         isDownloading = true;
         QuestionManagerUI.Instance.LoadingPanel.Show("Updating question...");
         ShowBlockedView();
-        question.isModerated = true; // Accept question.
+        question.IsModerated = true; // Accept question.
         SyncanoClient.Instance.Please().Save(question, OnAcceptSuccess, OnAcceptFail);
     }
 

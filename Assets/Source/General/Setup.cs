@@ -29,12 +29,12 @@ public struct Setup
         Quiz quiz = new Quiz();
         for (int i = 0; i < Quiz.QUESTION_COUNT; i++) {
             Question question = new Question();
-            question.id = i + 1;
-            question.text = "Question " + (i + 1);
+            question.Id = i + 1;
+            question.Text = "Question " + (i + 1);
             quiz.SetQuestion(i, question);
 
             question.CorrectAnswer = AnswerType.A;
-            question.answers = new List<string> { "Correct", "Wrong 1", "Wrong 2", "Wrong 3" };
+            question.Answers = new List<string> { "Correct", "Wrong 1", "Wrong 2", "Wrong 3" };
         }
 
         return quiz;

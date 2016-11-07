@@ -1,7 +1,9 @@
 ﻿using UnityEngine;
 using UnityEngine.SceneManagement;
 using System.Collections;
+using System.Collections.Generic;
 using Syncano;
+using Newtonsoft.Json;
 using Syncano.Data;
 
 public class MainMenu : MonoBehaviour
@@ -52,7 +54,9 @@ public class MainMenu : MonoBehaviour
     {
         if (response.IsSuccess)
         {
-            Quiz quiz = Quiz.FromJson(response.stdout);
+			Quiz quiz = new Quiz();
+			quiz.questions = JsonConvert.DeserializeObject<List<Question>>(response.stdout);
+
             if (quiz.IsValid())
             {
                 StartGame(quiz);

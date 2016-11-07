@@ -67,21 +67,11 @@ public class Quiz
         foreach (var item in questions) {
             if (item == null || item.IsValid() == false)
             {
-                Debug.LogWarning("Invalid question (id: " + item.id + ")");
+                Debug.LogWarning("Invalid question (id: " + item.Id + ")");
                 return false;
             }
         }
 
         return true;
     }
-
-	public static Quiz FromJson(string json)
-	{
-		if (string.IsNullOrEmpty(json))
-			return default(Quiz); // Return null for generic.
-
-		Quiz instance = new Quiz();
-		instance.questions = JsonConvert.DeserializeObject<List<Question>>(json);
-		return instance;
-	}
 }

@@ -19,7 +19,7 @@ public class AudiencePanel : LifelinePanelBase
         int count = 4;
         float totalWeight = 0;
         float[] weights = new float[count];
-        bool pickCorrect = ShouldPickCorrect(question.difficultyType);
+        bool pickCorrect = ShouldPickCorrect(question.DifficultyType);
 
         for (int i = 0; i < count; i++)
         {

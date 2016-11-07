@@ -3,42 +3,44 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using Syncano;
+using Newtonsoft.Json;
 
-[Serializable]
 public class Question : SyncanoObject
 {
 	/// <summary>
 	/// Quesion's text.
 	/// </summary>
-    public string text;
+	[JsonProperty("text")]
+	public string Text { get; set; }
 
     /// <summary>
     /// Question difficulty.
     /// </summary>
-	public DifficultyType difficultyType;
+	[JsonProperty("difficultyType")]
+	public DifficultyType DifficultyType { get; set;}
 
     /// <summary>
     /// Collection of answer strings.
     /// </summary>
-	public List<string> answers;
+	[JsonProperty("answers")]
+	public List<string> Answers { get; set;}
 
     /// <summary>
     /// Determines if new question was moderated.
     /// </summary>
-    public bool isModerated;
+	[JsonProperty("isModerated")]
+    public bool IsModerated;
 
     /// <summary>
     /// The index of the correct answer.
     /// Server always act like this value is 0. We use it only for shuffle.
     /// </summary>
-    [NonSerialized]
     private AnswerType correctAnswer = AnswerType.A;
 
     /// <summary>
     /// List of available answers.
     /// This is information for lifelines.
     /// </summary>
-    [NonSerialized]
     private List<AnswerType> availableAnswers = new List<AnswerType> { AnswerType.A, AnswerType.B, AnswerType.C, AnswerType.D };
 
     public AnswerType CorrectAnswer
@@ -55,23 +57,23 @@ public class Question : SyncanoObject
 
     public bool IsValid()
     {
-        if (string.IsNullOrEmpty(text))
+        if (string.IsNullOrEmpty(Text))
         {
-            Debug.LogWarning("Missing question text - id: " + id);
+			Debug.LogWarning("Missing question text - id: " + Id);
             return false;
         }
 
-        if (answers == null || answers.Count != 4)
+        if (Answers == null || Answers.Count != 4)
         {
-            Debug.LogWarning("Not eough answers - id: " + id);   
+			Debug.LogWarning("Not eough answers - id: " + Id);   
             return false;
         }
 
-        foreach (var item in answers)
+        foreach (var item in Answers)
         {
             if (string.IsNullOrEmpty(item))
             {
-                Debug.LogWarning("Missing answer - id: " + id);
+				Debug.LogWarning("Missing answer - id: " + Id);
                 return false;
             }
         }
@@ -84,8 +86,8 @@ public class Question : SyncanoObject
     /// </summary>
     public void Shuffle()
     {
-        string correct = answers[(int)correctAnswer];
-        answers.Shuffle();
-        correctAnswer = (AnswerType)answers.IndexOf(correct);
+        string correct = Answers[(int)correctAnswer];
+        Answers.Shuffle();
+        correctAnswer = (AnswerType)Answers.IndexOf(correct);
     }
 }

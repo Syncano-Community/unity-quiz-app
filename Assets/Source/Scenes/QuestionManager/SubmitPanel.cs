@@ -29,7 +29,7 @@ public class SubmitPanel : CommunicationPanel
     public void StartAddQuestion()
     {
         question = new Question();
-        question.isModerated = false;
+        question.IsModerated = false;
 
         QuestionManagerUI.Instance.QuestionPanel.ClearViews();
         ShowEditView();

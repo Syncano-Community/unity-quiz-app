@@ -76,11 +76,11 @@ public class QuestionPanel : MonoBehaviour
     {
         currentQuestion = question;
         ClearViews();
-        questionView.SetText(question.text);
+        questionView.SetText(question.Text);
 
         for (int i = 0; i < answers.Length; i++)
         {
-            answers[i].SetText(question.answers[i]);
+            answers[i].SetText(question.Answers[i]);
         }
     }
 
@@ -91,12 +91,12 @@ public class QuestionPanel : MonoBehaviour
     {
         currentQuestion = question;
         ClearViews();
-        questionView.SetText(question.text);
+        questionView.SetText(question.Text);
         yield return new WaitForSeconds(0.8f);
 
         for (int i = 0; i < answers.Length; i++)
         {
-            answers[i].SetText(question.answers[i]);
+            answers[i].SetText(question.Answers[i]);
             yield return new WaitForSeconds(0.4f);
         }
 
@@ -143,7 +143,7 @@ public class QuestionPanel : MonoBehaviour
             if (currentQuestion.AvailableAnswers.Contains((AnswerType) i))
             {
                 answers[i].SetInteractable(true);
-                answers[i].SetText(currentQuestion.answers[i]);
+                answers[i].SetText(currentQuestion.Answers[i]);
             }
             else
             {
